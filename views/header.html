@@ -1,0 +1,66 @@
+<div  ng-controller="loginCtrl">
+<header class="jumbotron">
+    <div class="container">
+        <div ng-show="login" id="go_admin">
+            <a class="btn btn-sm btn-default" ui-sref="app.admin">
+                Go to admin</a></div>
+    </div>
+</header>
+<nav class="navbar navbar-inverse"
+     role="navigation">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#navbarID"
+                    aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand"
+               ui-sref="app"><span>Нome Sweet home</span></a>
+        </div>
+        <div id="navbarID"
+             class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a ui-sref="app">
+                    <span class="glyphicon glyphicon-home"></span> Home</a></li>
+
+                <li class="dropdown">
+                    <a ng-click="checkUnicode()" class="dropdown-toggle"
+                            data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        Calculation</a>
+
+                    <ul class="dropdown-menu">
+                        <li><a id="stuff"  ui-sref="app.calculation" >Stuff</a></li>
+                        <li><a href="#">Materials</a></li>
+                        <!--<li role="separator" class="divider"></li>-->
+                    </ul>
+                </li>
+                <li><a ui-sref="app.plan">
+                    <span class=""></span> Plan</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a ui-sref="app.signup">
+                    <span class="glyphicon glyphicon-ok-sign"></span>
+                    Sign up</a></li>
+                <li id="logIn"><a ng-click="logIn()" ng-show="!login">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    Log in</a></li>
+
+                <li id="logOut"><a ng-click="logOut()" ng-show="login">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    Log out</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+</nav>
+</div>

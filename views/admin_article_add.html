@@ -1,0 +1,48 @@
+<div class="container content">
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="breadcrumb">
+                <li><a ui-sref="app.admin">Article list</a></li>
+                <li class="active">Add Article</li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-sm-9" ng-controller="addArticleCtrl">
+            <div class="alert alert-success" role="alert" ng-if="successAdd">The article was successful added!</div>
+            <form class="form-horizontal" role="form"
+                  name="updateForm" ng-submit="add()"
+                  ng-if="!successAdd">
+                <div class="form-group">
+
+                    <label for="title" class="col-sm-2 control-label">Title</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="title" name="title"
+                               ng-model="articleAdd.title">
+
+                    </div>
+                </div>
+                <!--<div class="form-group">-->
+                    <!--<label for="author" class="col-sm-2 control-label">Author</label>-->
+                    <!--<div class="col-sm-10">-->
+                        <!--<input type="text" class="form-control" id="author" name="author"-->
+
+                               <!--ng-model="articleAdd.author">{{articleAdd.author}}-->
+
+                    <!--</div>-->
+                <!--</div>-->
+
+
+                <div class="form-group">
+                    <label for="feedback" class="col-sm-2 control-label">Content</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="feedback" name="feedback" rows="17"
+                                  ng-model="articleAdd.content"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">Send article</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

@@ -1,0 +1,80 @@
+<div class="container content" ng-controller="stuffCtrl">
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+                <li role="presentation" ng-class="{active:isSelected(1)}">
+                    <a ng-click="select(1)" role="tab">All stuff</a></li>
+
+                <li role="presentation" ng-class="{active:isSelected(2)}">
+                    <a ng-click="select(2)" role="tab">Kitchen</a></li>
+
+                <li role="presentation" ng-class="{active:isSelected(3)}">
+                    <a ng-click="select(3)" role="tab">Bedroom</a></li>
+
+                <li role="presentation" ng-class="{active:isSelected(4)}">
+                    <a ng-click="select(4)" role="tab">Bathroom</a></li>
+
+                <li role="presentation" ng-class="{active:isSelected(5)}">
+                    <a ng-click="select(5)" role="tab">Children</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-12 col-sm-9">
+
+                <table class="table table-hover table-responsive">
+                    <tr class="success">
+                        <th>Name</th>
+                        <th></th>
+                        <!--<th>Link</th>-->
+                        <th>C</th>
+                        <th>Price</th>
+                        <th>Q</th>
+                        <th>Total</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+
+                    <tr ng-mouseover="showImg()" ng-mouseleave ="hideImg()"
+                        ng-repeat="s in filtered = (stuff | filter:filtText)">
+                        <td><a href="{{s.link}}">{{s.name}}</a></td>
+                        <td>
+                            <a class="btn btn-success btn-xs" href="">
+                            <span class="glyphicon glyphicon-search"></span></a></td>
+                        <!--<td>{{s.link}}</td>-->
+                        <td>{{s.currency}}</td>
+                        <td align="right">{{s.price}}</td>
+                        <td align="right">{{s.num}}</td>
+                        <td align="right">{{s.price*s.num}}</td>
+                        <td><a ng-click = "openEdit({id : s.id})">Edit</a></td>
+                        <td><a ng-click="delete({id:s.id})">Delete</a></td>
+                        <!--<div ng-show="onhoover" id="item-img">-->
+                            <!--<img width="170" height="192"-->
+                                 <!--src="http://i1.rozetka.ua/goods/388350/record_388350437.jpg">-->
+
+                    <!--</div>-->
+                    </tr>
+
+
+
+                    <tr>
+                        <th></th>
+                        <!--<th></th>-->
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th> {{getTotal()}}</th>
+                        <th></th>
+                        <th><a type="button" class="btn btn-success btn-sm"
+                               ng-click="openAdd()">
+                            <span></span> Add stuff</a>
+
+                        </th>
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>

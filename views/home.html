@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row row-content" ng-controller="articlesController">
+        <div class="col-xs-12" ng-if="!showArticles">
+            {{message}}
+        </div>
+        <div ng-show=""></div>
+
+        <div class="col-xs-9" ng-if="showArticles">
+            <div class="media" ng-repeat="article in articles | orderBy: '-date'">
+                <div class="media-left">
+                    <img ng-src="">
+                </div>
+                <div class="media-body">
+                    <h2>
+                        <a ui-sref="app.article({id: article.id})">{{article.title}}</a>
+                    </h2>
+                    <small>{{article.date}}</small>
+
+                    <p class="subText" >{{article.content.substr(0, 250) + "..."}}</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,79 @@
+<div class="container content" ng-controller="loginCtrl">
+    <div class="col-xs-12 col-sm-offset-2 col-sm-8">
+
+            <h3 class="modal-title">
+                Create a Blog Account
+            </h3>
+            <form class="form-horizontal" role="form" name="signupForm"
+                  ng-submit="signUp()" novalidate>
+                <div class="form-group"
+                     ng-class="{'has-error' : signupForm.name.$error.required &&
+                    !signupForm.name.$pristine }">
+                    <label class="sr-only" for="name">Name</label>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" id="name" name="name"
+                               placeholder="Name" ng-model="user.name" required>
+                            <span ng-show="signupForm.name.$error.required &&
+                    !signupForm.name.$pristine" class="help-block"> Your name is required.</span>
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error' : signupForm.emailUp.$error.required &&
+                        !signupForm.emailUp.$pristine || emailErrorMessage && !signupForm.emailUp.$pristine}">
+
+                    <label class="sr-only" for="emailUp">Email adress</label>
+                    <div class="col-xs-12">
+                        <input type="email" class="form-control" id="emailUp" name="emailUp"
+                               placeholder="Email" ng-model="user.email"
+                               ng-blur="checkEmail()" required>
+                        <span ng-show="signupForm.emailUp.$error.required && signupForm.emailUp.$invalid &&
+                !signupForm.emailUp.$pristine "
+                              class="help-block">Your email is required.</span>
+                            <span ng-show="emailErrorMessage" class="help-block">
+                                {{errorMessage}}</span>
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error' : signupForm.passwordUp.$error.required &&
+                         !signupForm.passwordUp.$pristine
+                         }"
+                >
+                    <label class="sr-only" for="passwordUp">Password</label>
+                    <div class="col-xs-12">
+                        <input type="password" class="form-control" id="passwordUp" name="passwordUp"
+                               placeholder="Password" ng-model="user.password" required>
+                            <span ng-show="signupForm.passwordUp.$error.required &&
+                         !signupForm.passwordUp.$pristine" class="help-block">Your password is required</span>
+                    </div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Remember me
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <button type="submit" class="btn btn-success btn-md"
+                                ng-disabled="signupForm.$invalid">
+                            Create New Account
+                        </button>
+                    </div>
+                </div>
+
+
+            </form>
+            <br>
+
+            <form>
+                <div class="form-group">
+                    <h4>Do you have a Google Account?</h4>
+                    <button type="submit" class="btn btn-success btn-md"
+                            ng-disabled="true">Sign up with Google</button>
+                </div>
+            </form>
+            <br>
+            <p class="login">Already have an account? <a data-toggle="modal" data-target="#loginModal">Log in</a></p>
+
+    </div>
+
+</div>

@@ -1,0 +1,37 @@
+<div class="container content" ng-controller="adminArticleCtrl">
+
+    <div ng-show="!showAdminArticles" class="alert alert-danger">
+        {{errorMessage}}
+    </div>
+    <div class="row" ng-show="showAdminArticles">
+        <div class="col-xs-12">
+            <a class="btn btn-success btn-group-sm"
+               ui-sref="app.add" role="button">Add article</a>
+            <br>
+            <br>
+            <div class="">
+                <table class="table table-hover">
+                    <tr class="success">
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+
+                    <tr ng-repeat="article in articles | orderBy: '-date'">
+                        <td>{{article.date}}</td>
+                        <td>{{article.title}}</td>
+                        <td>{{article.author}}</td>
+                        <td><a ui-sref="app.edit({id:article.id})">Edit</a></td>
+                        <td><a ng-click="delete({id:article.id})">Delete</a></td>
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+

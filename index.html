@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="blogApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head
+         content must come *after* these tags -->
+
+    <title>Blog</title>
+    <!-- Bootstrap -->
+    <!-- build:css styles/main.css -->
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="styles/font-awesome.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-social.css" rel="stylesheet">
+    <link href="styles/mystyles.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300' rel='stylesheet' type='text/css'>    <!-- endbuild -->
+
+</head>
+
+<body>
+
+<div ui-view="header"></div>
+<div ui-view="content"></div>
+<div ui-view="footer"></div>
+
+
+<!-- build:js scripts/main.js -->
+<script src="scripts/angular.min.js"></script>
+<script src="scripts/app.js"></script>
+<script src="scripts/controllers.js"></script>
+<script src="scripts/services.js"></script>
+<script src="scripts/angular-ui-router.min.js"></script>
+<script src="scripts/angular-resource.min.js"></script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/bootstrap.min.js"></script>
+<script src="scripts/ui-bootstrap-tpls-1.1.2.min.js"></script>
+<script src="scripts/myscript.js"></script>
+<!-- endbuild -->
+
+</body>
+
+</html>
