@@ -1,5 +1,21 @@
 'use strict';
 angular.module('blogApp')
+
+    .filter('custom', function() {
+        return function(input, search) {
+            if (!input) return input;
+            if (!search) return input;
+            var expected = ('' + search).toLowerCase();
+            var result = {};
+            angular.forEach(input, function(value, key) {
+                var actual = ('' + value).toLowerCase();
+                if (actual.indexOf(expected) !== -1) {
+                    result[key] = value;
+                }
+            });
+            return result;
+        }
+    })
     .controller('articlesController', ['$scope', 'articleFactory',
         function ($scope, articleFactory) {
             $scope.showArticles = true;
@@ -17,10 +33,6 @@ angular.module('blogApp')
                         $scope.message = "Error: " + response.status + " " + response.statusText;
                     }
                 );
-
-            //$scope.articles = articleFactory.getArticles().query();
-            //console.log( $scope.articles);
-
 
         }])
 
@@ -82,9 +94,16 @@ angular.module('blogApp')
             }
         }])
 
-    .controller('addArticleCtrl', ["$scope", 'articleFactory',
-        function ($scope, articleFactory) {
+    .controller('adminArticleCtrl', ["$scope", 'articleFactory',
+        '$timeout', '$state',
+        function ($scope, articleFactory,  $timeout, $state) {
+            $scope.articles = {};
+            $scope.errorMessage ="";
+            $scope.showAdminArticles = false;
             $scope.successAdd = false;
+            console.log(articleFactory.getlogEmail());
+            $scope.author = articleFactory.getlogEmail();
+
             $scope.articleAdd = {
                 title: "",
                 author: "",
@@ -95,7 +114,6 @@ angular.module('blogApp')
             $scope.add = function () {
                 console.log("submit");
                 //console.log($scope.articleEdit);
-
                 $scope.articleAdd.date = new Date();
                 $scope.articleAdd.author =articleFactory.getlogEmail();
                 articleFactory.addArticle(angular.copy($scope.articleAdd))
@@ -104,18 +122,15 @@ angular.module('blogApp')
                     });
 
                 console.log($scope.successAdd);
-            }
+            };
 
+            $scope.delete = function (id) {
+                console.log("delete");
+                console.log(id.id);
+                articleFactory.deleteArticle(id.id);
 
-        }
-    ])
+            };
 
-    .controller('adminArticleCtrl', ["$scope", 'articleFactory',
-        '$timeout', '$state',
-        function ($scope, articleFactory,  $timeout, $state) {
-            $scope.articles = {};
-            $scope.errorMessage ="";
-            $scope.showAdminArticles = false;
 
             articleFactory.checkUnicode().
                 then(
@@ -146,15 +161,6 @@ angular.module('blogApp')
                     }
                 }
             );
-
-
-            $scope.delete = function (id) {
-                console.log("delete");
-                console.log(id.id);
-                articleFactory.deleteArticle(id.id);
-
-            }
-
         }])
 
     .controller('loginCtrl', ["$scope", 'articleFactory','$uibModal',
@@ -213,75 +219,28 @@ angular.module('blogApp')
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/loginModal.html',
-                    controller: 'ModalInstanceCtrl',
+                    controller: 'ModalInstanceLoginCtrl',
                     resolve: {
                         item: {}
                     }
                 });
 
                 modalInstance.result.then(
-                    //close callback
                     function (item) {
-                        console.log(item);
-                            articleFactory.logIn(item)
-                                .then(
-                                        function(response){
-
-                                           $scope.login = true;
-                                            articleFactory.setUnicode(response.data, item.email);
-
-
-                                            console.log("item email" +item.email);
-                                            console.log("unicode: " + articleFactory.getUnicode());
-                                            console.log("email: " + articleFactory.getlogEmail());
-                                        },
-                                        function(){}
-                                    );
-                                },
+                        $scope.login = item.login;
+                    },
                     //dismiss callback
                     function () {
                         console.log('Modal dismissed at: ' + new Date());
                     });
-
-            //$scope.loginVerify = function () {
-            //
-            //    articleFactory.logIn(angular.copy($scope.user))
-            //        .then(
-            //            function (response) {
-            //                articleFactory.setUnicode(response.data, $scope.user.email);
-            //                console.log("unicode: " + articleFactory.getUnicode());
-            //                $('#loginModal').modal('hide');
-            //                $('#logIn').hide();
-            //                $('#logOut').show();
-            //                $scope.user.email = '';
-            //                $scope.user.password = '';
-            //                $scope.errorMessage = '';
-            //                $scope.emailErrorMessage = false;
-            //                $scope.passwordErrorMessage = false;
-            //
-            //            },
-            //            function (response) {
-            //                if (response.status == 400) {
-            //                    $scope.passwordErrorMessage = true;
-            //                    $scope.errorMessage = "Password does not correct!";
-            //
-            //                } else if (response.status == 404) {
-            //                    $scope.emailErrorMessage = true;
-            //                    $scope.errorMessage = "User does not exist!";
-            //                } else {
-            //                    $scope.errorMessage = response.status + " " + response.statusText;
-            //                }
-            //            });
-            //
-            //};
-
+            };
             $scope.logOut = function () {
                 articleFactory.setUnicode("", "");
                 $scope.login = false;
                 console.log("unicode: " + articleFactory.getUnicode());
             };
 
-        };
+
         }])
 
     .controller('stuffCtrl', ['$scope', 'articleFactory', '$uibModal',
@@ -349,7 +308,7 @@ angular.module('blogApp')
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/editStuffModal.html',
-                    controller: 'ModalInstanceCtrl',
+                    controller: 'ModalInstanceStuffCtrl',
                     resolve: {
                         item: function () {
                             return angular.copy($scope.allByID[id.id]);
@@ -380,7 +339,7 @@ angular.module('blogApp')
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/addStuffModal.html',
-                    controller: 'ModalInstanceCtrl',
+                    controller: 'ModalInstanceStuffCtrl',
                     resolve: {
                         item: {}
                     }
@@ -416,10 +375,7 @@ angular.module('blogApp')
             //};
         }])
 
-
-
-
-    .controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'item',
+    .controller('ModalInstanceStuffCtrl', ['$scope', '$uibModalInstance', 'item',
         function ($scope, $uibModalInstance, item) {
             $scope.item = item;
             $scope.close = function () {
@@ -428,7 +384,47 @@ angular.module('blogApp')
             $scope.save = function () {
                 $uibModalInstance.close($scope.item);
             };
-        }]);
+        }])
+
+    .controller('ModalInstanceLoginCtrl', ['$scope', '$uibModalInstance', 'item', 'articleFactory',
+    function ($scope, $uibModalInstance, item, articleFactory) {
+
+
+        $scope.item = item;
+
+        $scope.close = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+        $scope.save = function () {
+            $scope.emailErrorMessage = false;
+            $scope.passwordErrorMessage = false;
+            $scope.errorMessage = "";
+
+            articleFactory.logIn(item)
+                .then(
+                    function (response) {
+
+                        $scope.item.login = true;
+                        articleFactory.setUnicode(response.data, item.email);
+                        $uibModalInstance.close($scope.item);
+                    },
+                    function (response) {
+                        if (response.status == 400) {
+                            $scope.passwordErrorMessage = true;
+                            $scope.errorMessage = "Password does not correct!";
+
+
+                        } else if (response.status == 404) {
+                            $scope.emailErrorMessage = true;
+                            $scope.errorMessage = "User does not exist!";
+                        } else {
+                            $scope.errorMessage = response.status + " " + response.statusText;
+                        }
+                    }
+                );
+        };
+    }]);
 
 
 

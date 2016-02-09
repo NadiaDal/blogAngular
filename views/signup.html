@@ -18,32 +18,32 @@
                     </div>
                 </div>
                 <div class="form-group"
-                     ng-class="{'has-error' : signupForm.emailUp.$error.required &&
-                        !signupForm.emailUp.$pristine || emailErrorMessage && !signupForm.emailUp.$pristine}">
+                     ng-class="{'has-error' : signupForm.email.$error.required &&
+                        !signupForm.email.$pristine || emailErrorMessage && !signupForm.email.$pristine}">
 
-                    <label class="sr-only" for="emailUp">Email adress</label>
+                    <label class="sr-only" for="email">Email adress</label>
                     <div class="col-xs-12">
-                        <input type="email" class="form-control" id="emailUp" name="emailUp"
+                        <input type="email" class="form-control" id="email" name="email"
                                placeholder="Email" ng-model="user.email"
                                ng-blur="checkEmail()" required>
-                        <span ng-show="signupForm.emailUp.$error.required && signupForm.emailUp.$invalid &&
-                !signupForm.emailUp.$pristine "
+                        <span ng-show="signupForm.email.$error.required && signupForm.email.$invalid &&
+                !signupForm.email.$pristine "
                               class="help-block">Your email is required.</span>
                             <span ng-show="emailErrorMessage" class="help-block">
                                 {{errorMessage}}</span>
                     </div>
                 </div>
                 <div class="form-group"
-                     ng-class="{'has-error' : signupForm.passwordUp.$error.required &&
-                         !signupForm.passwordUp.$pristine
+                     ng-class="{'has-error' : signupForm.password.$error.required &&
+                         !signupForm.password.$pristine
                          }"
                 >
-                    <label class="sr-only" for="passwordUp">Password</label>
+                    <label class="sr-only" for="password">Password</label>
                     <div class="col-xs-12">
-                        <input type="password" class="form-control" id="passwordUp" name="passwordUp"
+                        <input type="password" class="form-control" id="password" name="password"
                                placeholder="Password" ng-model="user.password" required>
-                            <span ng-show="signupForm.passwordUp.$error.required &&
-                         !signupForm.passwordUp.$pristine" class="help-block">Your password is required</span>
+                            <span ng-show="signupForm.password.$error.required &&
+                         !signupForm.password.$pristine" class="help-block">Your password is required</span>
                     </div>
                 </div>
                 <div class="checkbox">

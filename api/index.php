@@ -175,7 +175,7 @@ $app->post('/users/login/check', function () use ($app) {
     $rs = $db->query($sql);
     if ($rs->num_rows == 0) {
         $app->response->setStatus(401);
-        echo "User is not authorized to access data.";
+        echo "User is not authorized to access data.".$sql;
     }
 });
 

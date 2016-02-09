@@ -34,7 +34,8 @@
                     </tr>
 
                     <tr ng-mouseover="showImg()" ng-mouseleave ="hideImg()"
-                        ng-repeat="s in filtered = (stuff | filter:filtText)">
+
+                        ng-repeat="s in filtered = (stuff | toArray : false | filter:filtText)">
                         <td><a href="{{s.link}}">{{s.name}}</a></td>
                         <td>
                             <a class="btn btn-success btn-xs" href="">

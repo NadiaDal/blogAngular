@@ -64,7 +64,7 @@ angular.module('blogApp')
             };
 
             this.setUnicode = function(code, email){
-                this.userLogged.code = code;
+                this.userLogged.code = code.trim();
                 this.userLogged.email = email;
             };
 
@@ -77,6 +77,8 @@ angular.module('blogApp')
             };
 
             this.checkUnicode = function(){
+                console.log(this.userLogged);
+
                 return $http.post(baseURL + "users/login/check", this.userLogged);
             };
 

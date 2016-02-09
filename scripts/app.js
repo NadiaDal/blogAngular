@@ -1,5 +1,5 @@
 'use strict';
-angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap'])
+angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-toArrayFilter'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
 
@@ -48,7 +48,7 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap'])
                 views: {
                     'content@' : {
                         templateUrl : 'views/admin_article_add.html',
-                        controller : 'addArticleCtrl'
+                        controller : 'adminArticleCtrl'
                     }
                 }
             })

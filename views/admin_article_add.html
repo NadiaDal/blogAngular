@@ -1,4 +1,4 @@
-<div class="container content">
+<div class="container content" ng-controller="adminArticleCtrl">
     <div class="row">
         <div class="col-xs-12">
             <ul class="breadcrumb">
@@ -6,7 +6,7 @@
                 <li class="active">Add Article</li>
             </ul>
         </div>
-        <div class="col-xs-12 col-sm-9" ng-controller="addArticleCtrl">
+        <div class="col-xs-12 col-sm-9" >
             <div class="alert alert-success" role="alert" ng-if="successAdd">The article was successful added!</div>
             <form class="form-horizontal" role="form"
                   name="updateForm" ng-submit="add()"
@@ -20,16 +20,6 @@
 
                     </div>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<label for="author" class="col-sm-2 control-label">Author</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input type="text" class="form-control" id="author" name="author"-->
-
-                               <!--ng-model="articleAdd.author">{{articleAdd.author}}-->
-
-                    <!--</div>-->
-                <!--</div>-->
-
 
                 <div class="form-group">
                     <label for="feedback" class="col-sm-2 control-label">Content</label>

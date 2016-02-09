@@ -19,7 +19,7 @@
                         <th>Delete</th>
                     </tr>
 
-                    <tr ng-repeat="article in articles | orderBy: '-date'">
+                    <tr ng-repeat="article in articles | toArray : false  | filter : author | orderBy : '-date'">
                         <td>{{article.date}}</td>
                         <td>{{article.title}}</td>
                         <td>{{article.author}}</td>

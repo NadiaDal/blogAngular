@@ -2,30 +2,41 @@
     <button type="button" class="close" ng-click="close()"> &times;
     </button>
     <h4 class="modal-title">
+        Log in
     </h4>
 </div>
 <div class="modal-body">
+      <div ng-show="passwordErrorMessage || emailErrorMessage" class="alert alert-danger">
+                                   {{errorMessage}}
+                               </div>
 
     <form class="form-horizontal"
-          ng-submit="save()">
-        <div class="form-group" ng-class="{'has-error': emailErrorMessage}">
+          ng-submit="save()" name = 'loginForm'>
+        <div class="form-group" ng-class="{'has-error': loginForm.email.$error.required && loginForm.email.$dirty}">
             <label class="sr-only" for="email">Email adress</label>
             <div class="col-xs-12">
-                <input type="email" class="form-control input-sm" id="email"
-                       placeholder="Email" ng-model="item.email" ng-blur="checkEmail()">
+                <input type="email" class="form-control input-sm" id="email" name="email"
+                       placeholder="Email" ng-model="item.email" ng-blur="checkEmail()" required>
 
-                            <span ng-show="emailErrorMessage" class="help-block">
-                                {{errorMessage}}</span>
+                            <span ng-show="loginForm.email.$error.required && loginForm.email.$dirty"
+                                  class="help-block">
+                                Your email is required</span>
+
 
             </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': passwordErrorMessage}">
+        <div class="form-group" ng-class="{'has-error': loginForm.password.$error.required && loginForm.password.$dirty}">
             <label class="sr-only" for="password">Password</label>
             <div class="col-xs-12">
                 <input type="password" class="form-control input-sm" id="password"
-                       placeholder="Password" ng-model="item.password">
-                             <span ng-show="passwordErrorMessage" class="help-block">
-                                {{errorMessage}}</span>
+                       name="password"
+                       placeholder="Password"
+                       ng-model="item.password" required>
+                             <span ng-show="loginForm.password.$error.required && loginForm.password.$dirty
+                             && !passwordErrorMessage"
+                                   class="help-block">Your password is required
+                             </span>
+
             </div>
         </div>
 
@@ -36,7 +47,8 @@
         </div>
         <div class="form-group">
             <div class="col-xs-12">
-                <button id="singin" type="submit" class="btn btn-info btn-sm">Sign in</button>
+                <button id="singin" type="submit" class="btn btn-info btn-sm"
+                        ng-disabled="loginForm.$invalid">Sign in</button>
             </div>
         </div>
 
