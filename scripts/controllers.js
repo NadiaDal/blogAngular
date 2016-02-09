@@ -101,6 +101,7 @@ angular.module('blogApp')
             $scope.errorMessage ="";
             $scope.showAdminArticles = false;
             $scope.successAdd = false;
+
             console.log(articleFactory.getlogEmail());
             $scope.author = articleFactory.getlogEmail();
 
@@ -163,8 +164,8 @@ angular.module('blogApp')
             );
         }])
 
-    .controller('loginCtrl', ["$scope", 'articleFactory','$uibModal',
-        function ($scope, articleFactory, $uibModal) {
+    .controller('loginCtrl', ["$scope", 'articleFactory','$uibModal', '$timeout', '$state',
+        function ($scope, articleFactory, $uibModal,$timeout, $state) {
             $scope.emailErrorMessage = false;
             $scope.passwordErrorMessage = false;
             $scope.errorMessage = "";
@@ -237,6 +238,10 @@ angular.module('blogApp')
             $scope.logOut = function () {
                 articleFactory.setUnicode("", "");
                 $scope.login = false;
+                $timeout(function(){
+                    $state.go('app')
+                }, 500);
+
                 console.log("unicode: " + articleFactory.getUnicode());
             };
 
