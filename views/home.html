@@ -1,12 +1,12 @@
-<div class="container">
-    <div class="row row-content" ng-controller="articlesController">
+<div class="container content" ng-controller="articlesController">
+    <div class="row" >
         <div class="col-xs-12" ng-if="!showArticles">
             {{message}}
         </div>
         <div ng-show=""></div>
 
         <div class="col-xs-9" ng-if="showArticles">
-            <div class="media" ng-repeat="article in articles | orderBy: '-date'">
+            <div class="media" ng-repeat="article in filteredArticles  | orderBy: '-date'">
                 <div class="media-left">
                     <img ng-src="">
                 </div>
@@ -16,12 +16,30 @@
                     </h2>
                     <small>{{article.date}}</small>
 
-                    <p class="subText" >{{article.content.substr(0, 250) + "..."}}</p>
+                    <p class="subText">{{article.content.substr(0, 250) + "..."}}</p>
                 </div>
 
             </div>
         </div>
 
+
+    </div>
+    <div class="row">
+        <div id = "pagination" class="col-xs-12">
+            <uib-pagination total-items="totalItems"
+                            items-per-page="itemsPerPage"
+                            ng-model="currentPage"
+                            boundary-links="true"
+                            max-size ="max_size"
+                            class="pagination-sm"
+                            previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                            last-text="&raquo;">
+            </uib-pagination>
+            <!--<pre>The selected page no: {{currentPage}}</pre>-->
+            <!--page="currentPage"-->
+            <!--on-select-page="setPage(page)"-->
+
+        </div>
     </div>
 
 </div>

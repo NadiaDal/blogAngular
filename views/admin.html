@@ -1,9 +1,10 @@
-<div class="container content" ng-controller="adminArticleCtrl">
+<div class="container content"
+     ng-controller="adminArticleController as adminArticleCtrl">
 
-    <div ng-show="!showAdminArticles" class="alert alert-danger">
-        {{errorMessage}}
+    <div ng-show="!adminArticleCtrl.showAdminArticles" class="alert alert-danger">
+        {{adminArticleCtrl.errorMessage}}
     </div>
-    <div class="row" ng-show="showAdminArticles">
+    <div class="row" ng-show="adminArticleCtrl.showAdminArticles">
         <div class="col-xs-12">
             <a class="btn btn-success btn-group-sm"
                ui-sref="app.add" role="button">Add article</a>
@@ -19,12 +20,12 @@
                         <th>Delete</th>
                     </tr>
 
-                    <tr ng-repeat="article in articles | toArray : false  | filter : author | orderBy : '-date'">
+                    <tr ng-repeat="article in adminArticleCtrl.articles | toArray : false  | filter : author | orderBy : '-date'">
                         <td>{{article.date}}</td>
                         <td>{{article.title}}</td>
                         <td>{{article.author}}</td>
                         <td><a ui-sref="app.edit({id:article.id})">Edit</a></td>
-                        <td><a ng-click="delete({id:article.id})">Delete</a></td>
+                        <td><a ng-click="adminArticleCtrl.deleteArticle({id:article.id})">Delete</a></td>
                     </tr>
 
                 </table>

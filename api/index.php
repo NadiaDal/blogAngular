@@ -190,9 +190,13 @@ $app->post('/stuff', function () use ($app) {
     $price = $data_array["price"];
     $room = $data_array["room"];
     $link = $data_array["link"];
+    $image = $data_array["image"];
     $currency = $data_array["currency"];
-    $sql = "INSERT INTO  `stuff` (`id`, `name`, `num`, `price`, `room`, `link`, `currency`)
-VALUES (NULL, '$name', $num, $price, '$room', '$link', '$currency')";
+    $weight = $data_array["weight"];
+    $sql = "INSERT INTO  `stuff` (`id`, `name`, `num`, `price`, `room`,
+ `link`,`image`, `currency`, `weight`)
+VALUES (NULL, '$name', $num, $price, '$room',
+'$link', '$image', '$currency', '$weight')";
     $db->query($sql);
     echo $sql;
 
@@ -236,10 +240,13 @@ $app->put('/stuff', function () use ($app) {
     $price = $data_array["price"];
     $room = $data_array["room"];
     $link = $data_array["link"];
+    $image = $data_array["image"];
     $currency = $data_array["currency"];
+    $weight = $data_array["weight"];
     $sql = "UPDATE `stuff` SET
 `name`='$name', `num`='$num',`price`='$price',
-`room` = '$room', `link` = '$link', `currency` = '$currency'
+`room` = '$room', `link` = '$link',`image` = '$image',
+ `currency` = '$currency', `weight` = '$weight'
 WHERE `id` = '$id'";
     $db->query($sql);
     echo $sql;

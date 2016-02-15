@@ -43,52 +43,70 @@
   position: absolute;
   top: 0;
 }
+
+.navbar-inverse .navbar-nav>li>a:focus,
+.navbar-inverse .navbar-nav>li>a:hover {
+  color: #fff;
+  background-color: #003300;
+}
+
+.navbar-inverse .navbar-nav> .open>li>a:focus,
+.navbar-inverse .navbar-nav> .open>li>a:hover {
+  color: #fff;
+  background-color: #003300;
+}
 .navbar-inverse {
   background: #3C763D;
   color: #ffffff;
   font-family: 'Indie Flower', cursive;
-  font-size: larger;
+  font-size: 20px;
 }
-.navbar-inverse .navbar-nav > .active > a {
-  background: #003300;
-  color: #ffffff;
-}
-.navbar-inverse .navbar-nav > .active > a:hover {
-  background: #003300;
-  color: #ffffff;
-}
-.navbar-inverse .navbar-nav > .active > a:focus {
-  background: #003300;
-  color: #ffffff;
-}
-.navbar-inverse .navbar-nav > .open > a {
-  background: #003300;
-  color: #ffffff;
-}
-.navbar-inverse .navbar-nav > .open > a:hover {
-  background: #003300;
-  color: #ffffff;
-}
-.navbar-inverse .navbar-nav > .open > a:focus {
-  background: #003300;
-  color: #ffffff;
-}
-.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
-  background-color: #009966;
-  color: #eeeeee;
-}
-.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover {
-  color: #003300
-}
-.navbar-inverse .navbar-nav .open .dropdown-menu {
-  background-color: #009966;
-  color: #eeeeee;
-}
-.navbar-inverse .navbar-brand {
-  color: #fff;
-  font-family: 'Indie Flower', cursive;
-  font-size: x-large;
-}
+/*.navbar-inverse .navbar-nav > .active > a {*/
+  /*background: #003300;*/
+  /*color: #ffffff;*/
+/*}*/
+/*.nav .navbar-nav >li > a:active{*/
+  /*background: #003300;*/
+  /*color: #ffffff;*/
+/*}*/
+/*.navbar-inverse .navbar-nav > .active > a:hover {*/
+  /*background: #003300;*/
+  /*color: #ffffff;*/
+/*}*/
+/*.navbar-inverse .navbar-nav > .active > a:focus {*/
+  /*background: #003300;*/
+  /*color: #ffffff;*/
+/*}*/
+/*.navbar-inverse .navbar-nav > .open > a {*/
+  /*background: #003300;*/
+  /*color: #ffffff;*/
+/*}*/
+/*.navbar-inverse .navbar-nav > .open > a:hover {*/
+  /*background: #003300;*/
+  /*color: #ffffff;*/
+/*}*/
+/*.navbar-inverse .navbar-nav > .open > a:focus {*/
+  /*background: #003300;*/
+  /*color: #ffffff;*/
+/*}*/
+/*.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {*/
+  /*background-color: #009966;*/
+  /*color: #eeeeee;*/
+/*}*/
+/*.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover {*/
+  /*color: #003300*/
+/*}*/
+/*.navbar-inverse .navbar-nav .open .dropdown-menu {*/
+  /*background-color: #009966;*/
+  /*color: #eeeeee;*/
+/*}*/
+/*.navbar-inverse .navbar-brand {*/
+  /*color: #fff;*/
+  /*font-family: 'Indie Flower', cursive;*/
+  /*font-size: x-large;*/
+/*}*/
+
+
 address {
   color: #0f0f0f;
   font-size: 80%;
@@ -98,6 +116,7 @@ body {
   align: center;
   padding: 0px 0px 0px 0px;
   z-index: 0;
+
 }
 .tab-content {
   border-bottom: 1px solid #dddddd;
@@ -115,7 +134,7 @@ body {
 }
 
 .content {
-  min-height: 600px;
+  min-height: 650px;
 
 }
 
@@ -148,12 +167,18 @@ a{
   color:  #003300;
   font-size: 16px;
 }
+.login > ul > li > a{
+  padding-left: 20px;
+  right: 25px;
+  color:  #003300;
+
+}
 .modal-dialog {
   display: block;
   /*font-size: 80%;*/
   margin-top: 250px;
   padding-top: 20px;
-  max-width: 380px;
+  max-width: 480px;
   line-height: 1.42857;
   color: #777;
 }
@@ -177,3 +202,56 @@ a{
   top: 80px;
   right: 10px;
   }
+
+#discount_23{
+  font-size: small;
+  color: darkred;
+}
+
+.stuff_total{
+  text-align: center;
+  padding-top: 40px;
+  margin-top: 30px;
+
+  margin-bottom: 30px;
+  font-size: 16px;
+  font-family: 'Indie Flower', cursive;
+  font-weight: bold;
+  background-image: url(../images/sticker.jpg);
+  background-repeat: no-repeat;
+  background-size:contain;
+  background-position:center;
+
+}
+.stuff_total >div>p>span{
+  font-size: 19px;
+}
+.table {
+  margin-top: 0px;
+}
+
+#add_stuff{
+  margin-top: 50px;
+
+}
+
+.img-idea{
+  width: 350px;
+
+  padding: 10px;
+  margin: 5px;
+}
+#add_idea{
+  width: 350px;
+  height: 150px;
+  padding: 10px;
+  margin: 5px;
+  background: darkcyan;
+  text-align: center;
+
+}
+
+#pagination{
+  position: absolute;
+  bottom: 20px;
+}

@@ -1,13 +1,13 @@
 'use strict';
 angular.module('blogApp')
 
-    .filter('custom', function() {
-        return function(input, search) {
+    .filter('custom', function () {
+        return function (input, search) {
             if (!input) return input;
             if (!search) return input;
             var expected = ('' + search).toLowerCase();
             var result = {};
-            angular.forEach(input, function(value, key) {
+            angular.forEach(input, function (value, key) {
                 var actual = ('' + value).toLowerCase();
                 if (actual.indexOf(expected) !== -1) {
                     result[key] = value;
@@ -16,193 +16,262 @@ angular.module('blogApp')
             return result;
         }
     })
-    .controller('articlesController', ['$scope', 'articleFactory',
-        function ($scope, articleFactory) {
+    .controller('articlesController', ['articleFactory', '$scope',
+        function (articleFactory, $scope) {
+            //var vm = this;
             $scope.showArticles = true;
             $scope.message = "Loading ..";
-
             $scope.articles = {};
+            $scope.filteredArticles = {};
+
+
+            $scope.totalItems = 0;
+            $scope.pageCount = 0;
+            $scope.itemsPerPage = 3;
+            $scope.currentPage = 1;
+            $scope.max_size = 5;
+
+
             articleFactory.getArticles()
                 .then(
                     function (response) {
                         $scope.articles = response.data;
+                        $scope.totalItems = $scope.articles.length;
+                        console.log("totalItems: " +$scope.totalItems);
+                        $scope.$watch('currentPage + itemsPerPage',
+                            function () {
+
+                                var begin = (($scope.currentPage - 1) * $scope.itemsPerPage),
+                                    end = begin + $scope.itemsPerPage;
+
+                                $scope.filteredArticles = $scope.articles.slice(begin, end);
+                            });
                         $scope.showArticles = true;
+                        $scope.pageCount = Math.ceil($scope.articles.length / $scope.itemsPerPage);
 
                     },
                     function (response) {
                         $scope.message = "Error: " + response.status + " " + response.statusText;
                     }
                 );
+
+
+            $scope.setPage = function (pageNo) {
+                $scope.currentPage = pageNo;
+            };
+
+            $scope.pageChanged = function () {
+                console.log('Page changed to: ' + $scope.currentPage);
+            };
 
         }])
 
-    .controller('articleDetailController', ['$scope', 'articleFactory', '$stateParams',
-        function ($scope, articleFactory, $stateParams) {
-            //console.log("id" +$stateParams.id, 10);
-            $scope.article = {};
-            articleFactory.getArticle(parseInt($stateParams.id, 10))
-                .then(
-                    function (response) {
-                        $scope.article = response.data[0];
-
-                    },
-                    function (response) {
-                        $scope.message = "Error: " + response.status + " " + response.statusText;
-                    }
-                );
-            $scope.comments = {};
-
-            articleFactory.getComments(parseInt($stateParams.id, 10))
-                .then(function (response) {
-                    $scope.comments = response.data;
-                });
-
-            $scope.userComment = {
+    .controller('articleDetailController', ['commentFactory',
+        'articleFactory', '$stateParams', '$log',
+        function (commentFactory, articleFactory, $stateParams, $log) {
+            var vm = this;
+            vm.article = {};
+            vm.comments = {};
+            vm.userComment = {
                 comment: "",
                 author: "",
                 date: ""
             };
-            $scope.submit = function () {
-                console.log("add comment");
-                $scope.userComment.date = new Date();
-                $scope.userComment.article_id = parseInt($stateParams.id, 10);
-                articleFactory.addComment(angular.copy($scope.userComment));
-                $scope.reset = function () {
-                    $scope.userComment = {
-                        comment: "",
-                        author: "",
-                        date: "",
-                        article_id: ""
-                    }
-                };
-                $scope.reset();
-                $scope.commentForm.$setPristine();
-                articleFactory.getComments(parseInt($stateParams.id, 10))
-                    .then(function (response) {
-                        $scope.comments = response.data;
-                    });
-            };
+            vm.getArticle = getArticle();
+            vm.getComments = getComments();
+            vm.submit = submit;
 
-            $scope.successEdit = false;
+            function getArticle() {
+                articleFactory.getArticle(parseInt($stateParams.id, 10))
+                    .then(
+                        function (response) {
+                            vm.article = response.data[0];
+                        },
+                        function (response) {
+                            $log.error(response.status + " " + response.statusText);
+                        }
+                    );
+            }
 
-            $scope.editArticle = function () {
-                $scope.article.date = new Date();
-                articleFactory.updateArticle(angular.copy($scope.article))
-                    .then(function (_) {
-                        $scope.successEdit = true;
-                    });
+            function getComments() {
+                commentFactory.getComments(parseInt($stateParams.id, 10))
+                    .then(
+                        function (response) {
+                            vm.comments = response.data;
+                        },
+                        function () {
+
+                        });
+            }
+
+
+            function submit() {
+                vm.userComment.date = new Date();
+                vm.userComment.article_id = parseInt($stateParams.id, 10);
+                commentFactory.addComment(angular.copy(vm.userComment))
+                    .then(
+                        function () {
+                            reset();
+                            vm.commentForm.$setPristine();
+                            getComments();
+                        },
+                        function () {
+                        }
+                    );
+            }
+
+            function reset() {
+                vm.userComment = {
+                    comment: "",
+                    author: "",
+                    date: "",
+                    article_id: ""
+                }
             }
         }])
 
-    .controller('adminArticleCtrl', ["$scope", 'articleFactory',
+    .controller('adminArticleController', ['$scope', 'articleFactory', 'loginFactory',
         '$timeout', '$state',
-        function ($scope, articleFactory,  $timeout, $state) {
-            $scope.articles = {};
-            $scope.errorMessage ="";
-            $scope.showAdminArticles = false;
-            $scope.successAdd = false;
-
-            console.log(articleFactory.getlogEmail());
-            $scope.author = articleFactory.getlogEmail();
-
-            $scope.articleAdd = {
+        function ($scope, articleFactory, $timeout, $state, loginFactory) {
+            var vm = this;
+            vm.articles = {};
+            vm.errorMessage = "";
+            vm.showAdminArticles = false;
+            vm.successAdd = false;
+            vm.successEdit = false;
+            vm.articleAdd = {
                 title: "",
                 author: "",
                 date: "",
                 content: ""
             };
+            vm.author = author();
 
-            $scope.add = function () {
-                console.log("submit");
-                //console.log($scope.articleEdit);
-                $scope.articleAdd.date = new Date();
-                $scope.articleAdd.author =articleFactory.getlogEmail();
-                articleFactory.addArticle(angular.copy($scope.articleAdd))
-                    .then(function (_) {
-                        $scope.successAdd = true;
-                    });
+            function author() {
+                return loginFactory.getEmail();
+            }
 
-                console.log($scope.successAdd);
-            };
+            //vm.checkUnicode = checkUnicode();
+            vm.getArticles = getArticles();
+            vm.editArticle = editArticle;
+            vm.addArticle = addArticle;
+            vm.deleteArticle = addArticle;
 
-            $scope.delete = function (id) {
-                console.log("delete");
-                console.log(id.id);
-                articleFactory.deleteArticle(id.id);
-
-            };
-
-
-            articleFactory.checkUnicode().
-                then(
-                function(_){
-                    articleFactory.getArticles()
-                        .then(
-                            function (response) {
-                                $scope.articles = response.data;
-                                $scope.showAdminArticles = true;
-
-                            },
-                            function (response) {
-                                $scope.message = "Error: " + response.status + " " + response.statusText;
+            function checkUnicode() {
+                console.log('check');
+                loginFactory.checkUnicode()
+                    .then(
+                        function (_) {
+                            getArticles();
+                        },
+                        function (response) {
+                            if (response.status == 401) {
+                                vm.errorMessage = "User is not authorized to access data.";
+                                $timeout(function () {
+                                    $state.go('app');
+                                }, 2000);
+                                console.log("User is not authorized to access data.");
+                            } else {
+                                vm.errorMessage = response.status + " " + response.statusText;
                             }
-                        );
-                },
-                function(response){
-                    if(response.status == 401){
-                        $scope.errorMessage = "User is not authorized to access data.";
-                        $timeout(function(){
-                            $state.go('app');
-                        },2000);
+                        }
+                    );
+            }
 
+            function getArticles() {
+                articleFactory.getArticles()
+                    .then(
+                        function (response) {
+                            vm.articles = response.data;
+                            vm.showAdminArticles = true;
 
-                        console.log("User is not authorized to access data.");
-                    } else {
-                        $scope.errorMessage = response.status + " " + response.statusText;
-                    }
-                }
-            );
+                        },
+                        function (response) {
+                            vm.message = "Error: " + response.status + " " + response.statusText;
+                        }
+                    );
+            }
+
+            function editArticle() {
+                vm.article.date = new Date();
+                articleFactory.updateArticle(angular.copy(vm.article))
+                    .then(
+                        function (_) {
+                            vm.successEdit = true;
+                        },
+                        function () {
+                        }
+                    );
+            }
+
+            function addArticle() {
+                console.log("submit");
+                vm.articleAdd.date = new Date();
+                articleFactory.addArticle(angular.copy(vm.articleAdd))
+                    .then(
+                        function (_) {
+                            vm.successAdd = true;
+                        },
+                        function () {
+                        });
+            }
+
+            function deleteArticle(id) {
+                articleFactory.deleteArticle(id.id)
+                    .then(
+                        function () {
+                            getArticles();
+                        },
+                        function () {
+
+                        });
+            }
         }])
 
-    .controller('loginCtrl', ["$scope", 'articleFactory','$uibModal', '$timeout', '$state',
-        function ($scope, articleFactory, $uibModal,$timeout, $state) {
-            $scope.emailErrorMessage = false;
-            $scope.passwordErrorMessage = false;
-            $scope.errorMessage = "";
-            $scope.login = false;
+    .controller('loginController', ['$uibModal',
+        'loginFactory', '$timeout', '$state',
+        function ($uibModal, $timeout, $state, loginFactory) {
 
-            $scope.user = {
+            var vm = this;
+            vm.emailErrorMessage = false;
+            vm.passwordErrorMessage = false;
+            vm.errorMessage = "";
+            vm.login = false;
+            vm.user = {
                 name: "",
                 email: "",
                 password: ""
             };
-
-            $scope.checkEmail = function () {
+            vm.checkEmail = checkEmail;
+            vm.logIn = logIn;
+            vm.logOut = logOut;
+            vm.signUp = signUp;
+            function checkEmail() {
                 // console.log("checkEmail");
-                if ($scope.user.email != "") {
-                    articleFactory.checkEmail(angular.copy($scope.user))
+                if (vm.user.email != "") {
+                    loginFactory.checkEmail(angular.copy(vm.user))
                         .then(
                             function (_) {
-                                $scope.emailErrorMessage = false;
-                                $scope.errorMessage = "";
+                                vm.emailErrorMessage = false;
+                                vm.errorMessage = "";
                             },
                             function (response) {
                                 if (response.status == 409) {
-                                    $scope.emailErrorMessage = true;
-                                    $scope.errorMessage = "User with such email already exist!";
+                                    vm.emailErrorMessage = true;
+                                    vm.errorMessage = "User with such email already exist!";
                                 } else {
-                                    $scope.emailErrorMessage = false;
-                                    $scope.errorMessage = response.status + " "
+                                    vm.emailErrorMessage = false;
+                                    vm.errorMessage = response.status + " "
                                         + response.statusText;
                                 }
                             }
                         );
                 }
-            };
+            }
 
-            $scope.signUp = function () {
-                $scope.rs = {};
-                articleFactory.signUp(angular.copy($scope.user))
+            function signUp() {
+                vm.rs = {};
+                loginFactory.signUp(angular.copy(vm.user))
                     .then(
                         function (_) {
 
@@ -210,13 +279,13 @@ angular.module('blogApp')
                         function (response) {
                             if (response.status == 409) {
                                 console.log("" + response.status);
-                                $scope.errorMessage = " User with this email already exist!";
+                                vm.errorMessage = " User with this email already exist!";
                             }
                         }
                     );
-            };
+            }
 
-            $scope.logIn = function () {
+            function logIn() {
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/loginModal.html',
@@ -228,119 +297,141 @@ angular.module('blogApp')
 
                 modalInstance.result.then(
                     function (item) {
-                        $scope.login = item.login;
+                        vm.login = item.login;
+
                     },
                     //dismiss callback
                     function () {
                         console.log('Modal dismissed at: ' + new Date());
                     });
-            };
-            $scope.logOut = function () {
-                articleFactory.setUnicode("", "");
-                $scope.login = false;
-                $timeout(function(){
+            }
+
+            function logOut() {
+                loginFactory.setUnicode("", "");
+                vm.login = false;
+                $timeout(function () {
                     $state.go('app')
                 }, 500);
 
-                console.log("unicode: " + articleFactory.getUnicode());
-            };
-
-
+                console.log("unicode: " + loginFactory.getUnicode());
+            }
         }])
 
-    .controller('stuffCtrl', ['$scope', 'articleFactory', '$uibModal',
-        function ($scope, articleFactory, $uibModal) {
-            $scope.tab = 1;
-            $scope.filtText = '';
+    .controller('stuffController', ['stuffFactory', '$uibModal',
+        function (stuffFactory, $uibModal) {
+            var vm = this;
+            vm.tab = 1;
+            vm.filtText = '';
+            vm.image = '';
+            vm.onhoover = true;
+            vm.showTax = false;
+            vm.stuff = {};
+            vm.allByID = [];
+            vm.filtered = [];
+            vm.getStuff = getStuff();
+            vm.isSelected = isSelected;
+            vm.getTotal = getTotal;
+            vm.checkTax = checkTax;
+            vm.editStuff = editStuff;
+            vm.addStuff = addStuff;
+            vm.deleteStuff = deleteStuff;
+            vm.select = select;
+            vm.showImg = showImg;
+            vm.hideImg = hideImg;
+            vm.openInNewTab = openInNewTab;
 
-            $scope.stuff = {};
-            $scope.allByID = [];
+            function getStuff() {
+                stuffFactory.getStuff()
+                    .then(
+                        function (response) {
+                            vm.stuff = response.data;
+                            vm.stuff.forEach(function (element) {
+                                vm.allByID[element.id] = element;
+                            })
+                        },
+                        function () {
+                        })
+            }
 
-            $scope.filtered = [];
-
-            var getItem = function (response) {
-                $scope.stuff = response.data;
-                $scope.stuff.forEach(function (element) {
-                    $scope.allByID[element.id] = element;
-                });
-            };
-            var logError = function(response){
-                console.log(response.status + " - "+ response.statusText);
-            };
-
-            articleFactory.getStuff().then(getItem, logError);
-
-            $scope.delete = function (id) {
+            function deleteStuff(id) {
                 console.log("delete");
-                articleFactory.deleteStuff(id.id).then(getItem, logError);
+                stuffFactory.deleteStuff(id.id)
+                    .then(
+                        function () {
+                            getStuff();
+                        },
+                        function () {
 
-            };
+                        });
+            }
 
-            $scope.select = function (setTab) {
-                $scope.tab = setTab;
+            function select(setTab) {
+                vm.tab = setTab;
                 if (setTab === 2) {
-                    $scope.filtText = "kitchen";
+                    vm.filtText = "kitchen";
                 }
                 else if (setTab === 3) {
-                    $scope.filtText = "bedroom";
+                    vm.filtText = "bedroom";
                 }
                 else if (setTab === 4) {
-                    $scope.filtText = "bathroom";
+                    vm.filtText = "bathroom";
                 }
                 else if (setTab === 5) {
-                    $scope.filtText = "children";
+                    vm.filtText = "children";
                 }
                 else {
-                    $scope.filtText = "";
+                    vm.filtText = "";
                 }
-            };
+            }
 
-            $scope.isSelected = function (checkTab) {
-                return ($scope.tab === checkTab);
-            };
+            function isSelected(checkTab) {
+                return (vm.tab === checkTab);
+            }
 
-            $scope.getTotal = function () {
-                //console.log("filtered: "+ $scope.filtered);
+            function getTotal() {
+                //console.log("filtered: "+ vm.filtered);
                 var result = 0;
-                $scope.filtered.forEach(function (el) {
+                vm.filtered.forEach(function (el) {
                     result += el.price * el.num;
                 });
                 // console.log(result);
                 return result;
-            };
+            }
 
-            $scope.openEdit = function (id) {
+
+            function editStuff(id) {
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/editStuffModal.html',
                     controller: 'ModalInstanceStuffCtrl',
                     resolve: {
                         item: function () {
-                            return angular.copy($scope.allByID[id.id]);
+                            return angular.copy(vm.allByID[id.id]);
                         }
                     }
                 });
 
                 modalInstance.result.then(
-                        //close callback
-                        function (item) {
-                            console.log(item);
-                            articleFactory.updateStuff(item)
-                                .then(
-                                    function(){
-                                        articleFactory.getStuff().then(getItem);
-                                        console.log("stuff updated");
-                                    },
-                                    function(){}
-                                );
-                        },
-                        //dismiss callback
-                        function () {
-                            console.log('Modal dismissed at: ' + new Date());
-                        });
-            };
+                    //close callback
+                    function (item) {
+                        console.log(item);
+                        stuffFactory.updateStuff(item)
+                            .then(
+                                function () {
+                                    getStuff();
+                                    console.log("stuff updated");
+                                },
+                                function () {
+                                }
+                            );
+                    },
+                    //dismiss callback
+                    function () {
+                        console.log('Modal dismissed at: ' + new Date());
+                    });
+            }
 
-            $scope.openAdd = function () {
+            function addStuff() {
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: 'views/addStuffModal.html',
@@ -350,34 +441,69 @@ angular.module('blogApp')
                     }
                 });
 
-                modalInstance.result.then(
-                    //close callback
-                    function (item) {
-                        console.log("new item: ");
-                        console.log(item);
-                        articleFactory.addStuff(item)
-                            .then(
-                                function(){
-                                    articleFactory.getStuff()
-                                        .then(getItem,logError);
-                                    console.log("stuff added");
+                modalInstance.result
+                    .then(
+                        function (item) {
+                            stuffFactory.addStuff(item).then(
+                                function (_) {
+                                    getStuff();
                                 },
-                                logError
-                            );
-                    },
-                    //dismiss callback
-                    function () {
-                        console.log('Modal dismissed at: ' + new Date());
-                    });
-            };
+                                function () {
+                                }
+                            )
+                        },
+                        //close callback
 
-            //$scope.onhoover = false;
-            //$scope.showImg = function(){
-            //    $scope.onhoover = true;
-            //};
-            //$scope.hideImg = function(){
-            //    $scope.onhoover = false;
-            //};
+                        //dismiss callback
+                        function () {
+                            console.log('Modal dismissed at: ' + new Date());
+                        });
+            }
+
+            function checkTax(price, weight, id) {
+                //console.log(typeof price);
+                var p = parseInt(price);
+                var w = parseInt(weight);
+                var limitPrice = 2250;
+                var limitWeight = 50;
+                if (p > limitPrice) {
+                    vm.showTax = true;
+                    vm.allByID.id;
+                    return (p - limitPrice) * 0.1 + p * 0.2;
+                } else if (w > limitWeight) {
+                    vm.showTax = true;
+                    return p / w * (w - limitWeight) * 0.1 + p * 0.2;
+                } else {
+                    vm.showTax = false;
+                }
+            }
+
+
+            function showImg(id) {
+                vm.image = '';
+                vm.onhoover = true;
+            }
+
+            function hideImg() {
+                vm.image = '';
+                vm.onhoover = true;
+            }
+
+            function openInNewTab(url) {
+                var win = window.open(url.url, '_blank');
+                win.focus();
+            }
+        }])
+
+    .controller('ideasController', ['ideasFactory',
+        function (ideasFactory) {
+            var vm = this;
+            vm.ideas = {};
+            vm.getIdeas = getIdeas();
+            function getIdeas() {
+                vm.ideas = ideasFactory.getIdeas();
+                console.log(vm.ideas);
+            }
         }])
 
     .controller('ModalInstanceStuffCtrl', ['$scope', '$uibModalInstance', 'item',
@@ -391,45 +517,53 @@ angular.module('blogApp')
             };
         }])
 
-    .controller('ModalInstanceLoginCtrl', ['$scope', '$uibModalInstance', 'item', 'articleFactory',
-    function ($scope, $uibModalInstance, item, articleFactory) {
+    .controller('ModalInstanceLoginCtrl', ['$scope', '$uibModalInstance', 'item', 'loginFactory',
+        function ($scope, $uibModalInstance, item, loginFactory) {
 
 
-        $scope.item = item;
+            $scope.item = item;
 
-        $scope.close = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
+            $scope.close = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
 
-        $scope.save = function () {
-            $scope.emailErrorMessage = false;
-            $scope.passwordErrorMessage = false;
-            $scope.errorMessage = "";
+            $scope.save = function () {
+                $scope.emailErrorMessage = false;
+                $scope.passwordErrorMessage = false;
+                $scope.errorMessage = "";
 
-            articleFactory.logIn(item)
-                .then(
-                    function (response) {
+                loginFactory.logIn(item)
+                    .then(
+                        function (response) {
 
-                        $scope.item.login = true;
-                        articleFactory.setUnicode(response.data, item.email);
-                        $uibModalInstance.close($scope.item);
-                    },
-                    function (response) {
-                        if (response.status == 400) {
-                            $scope.passwordErrorMessage = true;
-                            $scope.errorMessage = "Password does not correct!";
+                            $scope.item.login = true;
+                            loginFactory.setUnicode(response.data, item.email);
+                            console.log(loginFactory.getUnicode());
+                            console.log(loginFactory.getEmail());
+                            $uibModalInstance.close($scope.item);
+                        },
+                        function (response) {
+                            if (response.status == 400) {
+                                $scope.passwordErrorMessage = true;
+                                $scope.errorMessage = "Password does not correct!";
 
 
-                        } else if (response.status == 404) {
-                            $scope.emailErrorMessage = true;
-                            $scope.errorMessage = "User does not exist!";
-                        } else {
-                            $scope.errorMessage = response.status + " " + response.statusText;
+                            } else if (response.status == 404) {
+                                $scope.emailErrorMessage = true;
+                                $scope.errorMessage = "User does not exist!";
+                            } else {
+                                $scope.errorMessage = response.status + " " + response.statusText;
+                            }
                         }
-                    }
-                );
-        };
-    }]);
+                    );
+            };
+        }])
 
+
+    .controller('PaginationCtrl', ['$scope', '$log',
+        function ($scope, $log) {
+
+        }])
+;
 
 

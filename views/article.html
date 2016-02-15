@@ -1,4 +1,4 @@
-<div class="container content">
+<div class="container content" ng-controller="articleDetailController as articleDetCtrl">
     <div class="row">
         <div class="col-xs-12">
             <ul class="breadcrumb">
@@ -6,22 +6,22 @@
                 <li class="active">Article</li>
             </ul>
         </div>
-        <div class="col-xs-9" ng-controller="articleDetailController">
+        <div class="col-xs-9" >
             <div class="media">
                 <div class="media-left">
                     <img ng-src="">
                 </div>
                 <div class="media-body">
                     <h2>
-                        {{article.title}}
+                        {{articleDetCtrl.article.title}}
                     </h2>
-                    <small>{{article.date}}</small>
-                    <p style="maxlength: 50">{{article.content}}</p>
+                    <small>{{articleDetCtrl.article.date}}</small>
+                    <p>{{articleDetCtrl.article.content}}</p>
                 </div>
             </div>
             <div class="col-xs-offset-1 col-xs-10">
                 <ul class="list-unstyled comment">
-                    <li ng-repeat="com in comments">
+                    <li ng-repeat="com in articleDetCtrl.comments">
                         <blockquote>
                             <p>{{com.comment}}</p>
                             <footer>{{com.author}}, {{com.date}}</footer>
@@ -33,8 +33,8 @@
             <div class="col-xs-10">
                 <blockquote ng-show="commentForm.$valid && commentForm.$dirty">
 
-                    <p>{{userComment.comment}}</p>
-                    <footer>{{userComment.author}}</footer>
+                    <p>{{articleDetCtrl.userComment.comment}}</p>
+                    <footer>{{articleDetCtrl.userComment.author}}</footer>
                 </blockquote>
 
                 <h4>Customer Comments</h4>

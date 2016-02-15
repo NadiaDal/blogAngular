@@ -7,7 +7,7 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
                 url: '/',
                 views: {
                     'header': {templateUrl: 'views/header.html',
-                        controller: 'loginCtrl'},
+                        controller: 'loginController'},
                     'content': {templateUrl: 'views/home.html',
                         controller: 'articlesController'},
                     'footer': {templateUrl: 'views/footer.html'}
@@ -28,7 +28,7 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
                 views: {
                     'content@' : {
                         templateUrl : 'views/admin.html',
-                        controller : 'adminArticleCtrl'
+                        controller : 'adminArticleController'
                     }
                 }
             })
@@ -38,7 +38,7 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
                 views: {
                     'content@' : {
                         templateUrl : 'views/admin_article_edit.html',
-                        controller : 'articleDetailController'
+                        controller : 'adminArticleController'
                     }
                 }
             })
@@ -48,7 +48,7 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
                 views: {
                     'content@' : {
                         templateUrl : 'views/admin_article_add.html',
-                        controller : 'adminArticleCtrl'
+                        controller : 'adminArticleController'
                     }
                 }
             })
@@ -57,7 +57,7 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
             views: {
                 'content@' : {
                     templateUrl : 'views/calculation.html',
-                    controller : 'stuffCtrl'
+                    controller : 'stuffController'
                 }
             }
              })
@@ -71,6 +71,15 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
                     }
                 }
             })
+            .state('app.ideas', {
+                url : 'ideas',
+                views: {
+                    'content@' : {
+                        templateUrl : 'views/ideas.html',
+                        controller : 'ideasController'
+                    }
+                }
+            })
 
 
             .state('app.signup', {
@@ -78,7 +87,7 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
                 views: {
                     'content@' : {
                         templateUrl : 'views/signup.html',
-                        controller : 'loginCtrl'
+                        controller : 'loginController'
                     }
                 }
             })

@@ -1,4 +1,4 @@
-<div class="container content" ng-controller="adminArticleCtrl">
+<div class="container content" ng-controller="adminArticleController as adminArticleCtrl">
     <div class="row">
         <div class="col-xs-12">
             <ul class="breadcrumb">
@@ -7,16 +7,18 @@
             </ul>
         </div>
         <div class="col-xs-12 col-sm-9" >
-            <div class="alert alert-success" role="alert" ng-if="successAdd">The article was successful added!</div>
+            <div class="alert alert-success" role="alert"
+                 ng-if="adminArticleCtrl.successAdd">
+                The article was successful added!</div>
             <form class="form-horizontal" role="form"
-                  name="updateForm" ng-submit="add()"
-                  ng-if="!successAdd">
+                  name="updateForm" ng-submit="adminArticleCtrl.addArticle()"
+                  ng-if="!adminArticleCtrl.successAdd">
                 <div class="form-group">
 
                     <label for="title" class="col-sm-2 control-label">Title</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="title" name="title"
-                               ng-model="articleAdd.title">
+                               ng-model="adminArticleCtrl.articleAdd.title">
 
                     </div>
                 </div>
@@ -25,7 +27,7 @@
                     <label for="feedback" class="col-sm-2 control-label">Content</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" id="feedback" name="feedback" rows="17"
-                                  ng-model="articleAdd.content"></textarea>
+                                  ng-model="adminArticleCtrl.articleAdd.content"></textarea>
                     </div>
                 </div>
                 <div class="form-group">

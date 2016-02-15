@@ -1,0 +1,16 @@
+<div class="container content" ng-controller="ideasController as ideasCtrl">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4" ng-repeat="idea in ideasCtrl.ideas">
+            <img class="img-thumbnail img-idea"
+                 ng-src="{{idea.image}}" alt="{{idea.description}}">
+
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div id="add_idea" class="img-thumbnail img-idea">
+                Click to add new idea!
+            </div>
+
+        </div>
+
+    </div>
+</div>

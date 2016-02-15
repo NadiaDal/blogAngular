@@ -25,13 +25,62 @@ angular.module('blogApp')
             this.updateArticle = function(article){
                 return $http.put(baseURL + "articles", article);
             };
+        }])
+    .service('ideasFactory',[
+        function(){
+            this.getIdeas = function(){
+                return [
+                    {image : "http://www.ikea.com/ms/media/cho_room/20152/dining/20152_codi09a/20152_codi09a_01_PH121614.jpg",
+                        description : "description"},
+                    {image : "http://www.ikea.com/ms/media/cho_room/20161/dining/20161_codi05a/20161_codi05a_01_PH127998.jpg",
+                        description : "description"},
+                    {image : "http://www.ikea.com/ms/media/cho_room/20143/sleeping/20143_cosl15a/20143_cosl15a_01_PH006677.jpg",
+                        description : "description"},
+                    {image : "http://www.ikea.com/ms/media/cho_room/20154/seating/20154_cols24a/20154_cols24a_01_PH125071.jpg",
+                        description : "description"},
+                    {image : "http://www.ikea.com/ms/media/cho_room/20151/media/20151_colm04a/20151_colm04a_01_PH121191.jpg",
+                        description : "description"}
+                ];
+            }
+        }
+    ])
 
+    .service('commentFactory', ['$http', 'baseURL',
+        function ($http, baseURL) {
             this.getComments = function(id){
                 return $http.get(baseURL + "comments/"+id);
             };
 
             this.addComment = function(comment){
                 return $http.post(baseURL+ "comments", comment);
+            };
+        }])
+
+    .service('stuffFactory', ['$http', 'baseURL',
+        function ($http, baseURL) {
+            this.getStuff = function(){
+                return $http.get(baseURL + "stuff");
+            };
+
+            this.addStuff = function(stuff){
+                return $http.post(baseURL + "stuff", stuff);
+            };
+
+            this.deleteStuff = function(id){
+                return $http.delete(baseURL + "stuff/"+id);
+            };
+
+            this.updateStuff = function(stuff){
+                return $http.put(baseURL + "stuff", stuff);
+            };
+        }])
+
+    .service('loginFactory', ['$http', 'baseURL',
+        function ($http, baseURL) {
+
+            this.userLogged = {
+                code: "",
+                email:""
             };
 
             this.signUp = function(user){
@@ -46,22 +95,6 @@ angular.module('blogApp')
                 return $http.post(baseURL + "users/login/email", user);
             };
 
-            this.getStuff = function(){
-                return $http.get(baseURL + "stuff");
-            };
-
-            this.addStuff = function(stuff){
-                return $http.post(baseURL + "stuff", stuff);
-            };
-
-            this.deleteStuff = function(id){
-                return $http.delete(baseURL + "stuff/"+id);
-            };
-
-            this.userLogged = {
-                code: "",
-                email:""
-            };
 
             this.setUnicode = function(code, email){
                 this.userLogged.code = code.trim();
@@ -72,7 +105,7 @@ angular.module('blogApp')
                 return this.userLogged.code;
             };
 
-            this.getlogEmail = function(){
+            this.getEmail = function(){
                 return this.userLogged.email;
             };
 
@@ -81,14 +114,5 @@ angular.module('blogApp')
 
                 return $http.post(baseURL + "users/login/check", this.userLogged);
             };
-
-            this.updateStuff = function(stuff){
-                return $http.put(baseURL + "stuff", stuff);
-            };
-
-            //this.getArticles = function () {
-            //    return $resource(baseURL + "articles/:id", null, {'update':{method:'PUT'}});
-            //};
-
         }])
 ;
