@@ -7,6 +7,8 @@ function connect_db() {
 	$database = 'blog';
 	$connection = new mysqli($server, $user, $pass, $database);
 
+
+
 	return $connection;
 }
 
