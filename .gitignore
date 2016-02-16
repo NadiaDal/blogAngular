@@ -1,5 +1,2 @@
 .idea/*
-Slim/*
-scripts/*.min.js
-styles/*.min.css
-fonts/*
+lib/*
