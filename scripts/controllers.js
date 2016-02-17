@@ -145,20 +145,19 @@ angular.module('blogApp')
                 date: "",
                 content: ""
             };
-            vm.author = author();
+            //vm.author = author();
 
-            function author() {
-                return loginFactory.getEmail();
-            }
+            //function author() {
+            //    return loginFactory.getEmail();
+            //}
 
-            //vm.checkUnicode = checkUnicode();
-            vm.getArticles = getArticles();
+            $scope.checkUnicode = checkUnicode();
+            vm.getArticles = getArticles;
             vm.editArticle = editArticle;
             vm.addArticle = addArticle;
             vm.deleteArticle = addArticle;
 
             function checkUnicode() {
-                console.log('check');
                 loginFactory.checkUnicode()
                     .then(
                         function (_) {

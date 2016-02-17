@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('blogApp')
-    .constant("baseURL", "http://localhost/blogAngular/api/index.php/")
+    //.constant("baseURL", "http://localhost/blogAngular/api/index.php/")
+    .constant("baseURL", "http://my-homesweethome.rhcloud.com/api/index.php/")
 
     .service('articleFactory', ['$http', 'baseURL',
         function ($http, baseURL) {
@@ -83,6 +84,11 @@ angular.module('blogApp')
                 email:""
             };
 
+            this.checkUnicode = function(){
+                // console.log(this.userLogged);
+                return $http.post(baseURL + "users/login/check", this.userLogged);
+            };
+
             this.signUp = function(user){
                 return $http.post(baseURL + "users", user);
             };
@@ -109,10 +115,6 @@ angular.module('blogApp')
                 return this.userLogged.email;
             };
 
-            this.checkUnicode = function(){
-                console.log(this.userLogged);
 
-                return $http.post(baseURL + "users/login/check", this.userLogged);
-            };
         }])
 ;
