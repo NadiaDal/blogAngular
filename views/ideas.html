@@ -1,16 +1,43 @@
 <div class="container content" ng-controller="ideasController as ideasCtrl">
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4" ng-repeat="idea in ideasCtrl.ideas">
-            <img class="img-thumbnail img-idea"
-                 ng-src="{{idea.image}}" alt="{{idea.description}}">
-
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-4">
-            <div id="add_idea" class="img-thumbnail img-idea">
-                Click to add new idea!
+        <div class="col-sm-3" >
+            <div class="row">
+                <div class="col-xs-12">
+                    <a class="btn btn-mysuccess">Add new idea</a>
+                </div>
             </div>
 
         </div>
+        <div class="col-sm-9 content_idea">
+
+            <uib-carousel interval="ideasCtrl.myInterval" no-wrap="ideasCtrl.noWrapSlides">
+                <uib-slide ng-repeat="idea in ideasCtrl.ideas" active="idea.active" index="idea.id">
+
+                    <img ng-src="{{idea.image}}" style="margin:auto;">
+
+
+                    <div class="carousel-caption">
+
+                        <p>{{idea.title}}</p>
+                        <p><a ng-click="ideasCtrl.getIdea()" class="btn btn-primary btn-xs"
+                              ui-sref="app.idea({id:idea.id})">More &raquo;</a></p>
+                    </div>
+                </uib-slide>
+
+            </uib-carousel>
+            <div class="row">
+                <div class="col-xs-12 ">
+                    <a ng-repeat="idea in ideasCtrl.ideas">
+                        <img ng-src="{{idea.image}}"
+                        class="small_pic_idea">
+                    </a>
+                </div>
+            </div>
+
+
+            </div>
+        </div>
 
     </div>
+
 </div>

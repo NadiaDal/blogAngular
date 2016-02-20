@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('blogApp')
-    //.constant("baseURL", "http://localhost/blogAngular/api/index.php/")
-    .constant("baseURL", "http://my-homesweethome.rhcloud.com/api/index.php/")
+    .constant("baseURL", "http://localhost/blogAngular/api/index.php/")
+//    .constant("baseURL", "http://my-homesweethome.rhcloud.com/api/index.php/")
 
 
     .service('articleFactory', ['$http', 'baseURL',
@@ -28,23 +28,34 @@ angular.module('blogApp')
                 return $http.put(baseURL + "articles", article);
             };
         }])
+    
+
     .service('ideasFactory',[
         function(){
-            this.getIdeas = function(){
-                return [
-                    {image : "http://www.ikea.com/ms/media/cho_room/20152/dining/20152_codi09a/20152_codi09a_01_PH121614.jpg",
-                        description : "description"},
-                    {image : "http://www.ikea.com/ms/media/cho_room/20161/dining/20161_codi05a/20161_codi05a_01_PH127998.jpg",
-                        description : "description"},
-                    {image : "http://www.ikea.com/ms/media/cho_room/20143/sleeping/20143_cosl15a/20143_cosl15a_01_PH006677.jpg",
-                        description : "description"},
-                    {image : "http://www.ikea.com/ms/media/cho_room/20154/seating/20154_cols24a/20154_cols24a_01_PH125071.jpg",
-                        description : "description"},
-                    {image : "http://www.ikea.com/ms/media/cho_room/20151/media/20151_colm04a/20151_colm04a_01_PH121191.jpg",
-                        description : "description"}
+            this.ideas =[
+                    {id:0, title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20152/dining/20152_codi09a/20152_codi09a_01_PH121614.jpg",
+                        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
+                    {id:1,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20161/dining/20161_codi05a/20161_codi05a_01_PH127998.jpg",
+                        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
+                    {id:2,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20143/sleeping/20143_cosl15a/20143_cosl15a_01_PH006677.jpg",
+                        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta," },
+                    {id:3,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20154/seating/20154_cols24a/20154_cols24a_01_PH125071.jpg",
+                        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
+                    {id:4,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20151/media/20151_colm04a/20151_colm04a_01_PH121191.jpg",
+                        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
+                       {id:5,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20152/dining/20152_codi09a/20152_codi09a_01_PH121614.jpg",
+                        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, ."}
                 ];
+            this.getIdeas = function(){
+                return this.ideas;
+            }
+            
+            this.getIdea = function(id){
+                return this.ideas[id];
             }
         }
+        
+        
     ])
 
     .service('commentFactory', ['$http', 'baseURL',
@@ -87,6 +98,7 @@ angular.module('blogApp')
 
             this.checkUnicode = function(){
                 // console.log(this.userLogged);
+//                 $http.post(baseURL + "users/login/check", this.userLogged);
                 return $http.post(baseURL + "users/login/check", this.userLogged);
             };
 

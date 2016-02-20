@@ -37,7 +37,7 @@ angular.module('blogApp')
                     function (response) {
                         $scope.articles = response.data;
                         $scope.totalItems = $scope.articles.length;
-                        console.log("totalItems: " +$scope.totalItems);
+                       // console.log("totalItems: " +$scope.totalItems);
                         $scope.$watch('currentPage + itemsPerPage',
                             function () {
 
@@ -130,11 +130,11 @@ angular.module('blogApp')
             }
         }])
 
-    .controller('adminArticleController', ['$scope', 'articleFactory', 'loginFactory',
-        '$timeout', '$state',
-        function ($scope, articleFactory, $timeout, $state, loginFactory) {
+    .controller('adminArticleController', ['$scope', 'articleFactory', 'loginFactory', '$timeout', '$state', '$stateParams',
+        function ($scope, articleFactory, loginFactory, $timeout, $state,$stateParams ) {
             var vm = this;
             vm.articles = {};
+            vm.article ={};
             vm.errorMessage = "";
             vm.showAdminArticles = false;
             vm.successAdd = false;
@@ -145,19 +145,19 @@ angular.module('blogApp')
                 date: "",
                 content: ""
             };
-            //vm.author = author();
-
-            //function author() {
-            //    return loginFactory.getEmail();
-            //}
-
-            $scope.checkUnicode = checkUnicode();
+            vm.author = author();
+            vm.checkUnicode = checkUnic();
+            vm.getArticle = getArticle;
             vm.getArticles = getArticles;
             vm.editArticle = editArticle;
             vm.addArticle = addArticle;
             vm.deleteArticle = addArticle;
+            
+             function author() {
+                return loginFactory.getEmail();
+            }
 
-            function checkUnicode() {
+            function checkUnic() {
                 loginFactory.checkUnicode()
                     .then(
                         function (_) {
@@ -173,6 +173,21 @@ angular.module('blogApp')
                             } else {
                                 vm.errorMessage = response.status + " " + response.statusText;
                             }
+                        }
+                    );
+            }
+            
+            function getArticle() {
+                console.log("edit " + parseInt($stateParams.id, 10));
+                articleFactory.getArticle(parseInt($stateParams.id, 10))
+                    .then(
+                        function (response) {
+                            vm.article = response.data[0];
+                            console.log("edit");
+                            console.log(response.data);
+                        },
+                        function (response) {
+                            $log.error(response.status + " " + response.statusText);
                         }
                     );
             }
@@ -494,16 +509,39 @@ angular.module('blogApp')
             }
         }])
 
-    .controller('ideasController', ['ideasFactory',
-        function (ideasFactory) {
+    .controller('ideasController', ['ideasFactory','$stateParams',
+        function (ideasFactory,$stateParams) {
             var vm = this;
+            vm.myInterval = 4000;
+            vm.noWrapSlides = false;
             vm.ideas = {};
             vm.getIdeas = getIdeas();
+                    
+            
             function getIdeas() {
                 vm.ideas = ideasFactory.getIdeas();
-                console.log(vm.ideas);
+                //console.log(vm.ideas);
             }
+            
+            
+            
         }])
+
+.controller('ideaController', ['ideasFactory','$stateParams',
+        function (ideasFactory,$stateParams) {
+            var vm = this;
+            vm.idea={};
+            vm.getIdea = getIdea();
+            
+            function getIdea(){
+                vm.idea = ideasFactory.getIdea(parseInt($stateParams.id, 10));
+         
+                
+            }
+            
+            
+        }])
+
 
     .controller('ModalInstanceStuffCtrl', ['$scope', '$uibModalInstance', 'item',
         function ($scope, $uibModalInstance, item) {
@@ -537,8 +575,8 @@ angular.module('blogApp')
 
                             $scope.item.login = true;
                             loginFactory.setUnicode(response.data, item.email);
-                            console.log(loginFactory.getUnicode());
-                            console.log(loginFactory.getEmail());
+                            //console.log(loginFactory.getUnicode());
+                           // console.log(loginFactory.getEmail());
                             $uibModalInstance.close($scope.item);
                         },
                         function (response) {
@@ -556,12 +594,6 @@ angular.module('blogApp')
                         }
                     );
             };
-        }])
-
-
-    .controller('PaginationCtrl', ['$scope', '$log',
-        function ($scope, $log) {
-
         }])
 ;
 

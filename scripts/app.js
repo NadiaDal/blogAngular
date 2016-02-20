@@ -42,6 +42,16 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
                     }
                 }
             })
+        
+         .state('app.idea', {
+                url : 'idea/:id',
+                views: {
+                    'content@' : {
+                        templateUrl : 'views/idea_description.html',
+                        controller : 'ideaController'
+                    }
+                }
+            })
 
             .state('app.add', {
                 url : 'add',
@@ -91,7 +101,8 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
                     }
                 }
             })
-        ;
+          
+        
         $urlRouterProvider.otherwise('/');
     })
 ;

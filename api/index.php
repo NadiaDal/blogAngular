@@ -6,7 +6,7 @@ $app = new \Slim\Slim();
 $app->get('/articles', function () use ($app) {
     require_once '../lib/mysql.php';
     $db = connect_db();
-    $rs = $db->query('SELECT * FROM articles;');
+    $rs = $db->query('SELECT * FROM articles ORDER BY date DESC;');
     $data = $rs->fetch_all(MYSQLI_ASSOC);
     $app->contentType("application/json");
     echo json_encode($data);

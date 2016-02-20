@@ -20,11 +20,12 @@
                         <th>Delete</th>
                     </tr>
 
-                    <tr ng-repeat="article in adminArticleCtrl.articles | toArray : false  | filter : author | orderBy : '-date'">
+                    <tr ng-repeat="article in adminArticleCtrl.articles | toArray : false  | filter : adminArticleCtrl.author | orderBy : '-date'">
                         <td>{{article.date}}</td>
                         <td>{{article.title}}</td>
                         <td>{{article.author}}</td>
-                        <td><a ui-sref="app.edit({id:article.id})">Edit</a></td>
+                        <td><a ui-sref="app.edit({id:article.id})" 
+                               ng-click="adminArticleCtrl.getArticle()">Edit</a></td>
                         <td><a ng-click="adminArticleCtrl.deleteArticle({id:article.id})">Delete</a></td>
                     </tr>
 

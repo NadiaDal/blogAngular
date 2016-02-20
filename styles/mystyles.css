@@ -10,7 +10,7 @@
 }
 .row-footer {
   margin: 0px auto;
-  padding: 20px 0px;
+  padding: 30px 0px;
   background-color: #FF9990;
 }
 .jumbotron {
@@ -31,17 +31,13 @@
   background-repeat: no-repeat;
 }
 
-.carousel {
-  background: #1a237e;
-}
-.carousel .item {
-  height: 300px;
-}
-.carousel .item img {
-  left: 0;
-  min-height: 300px;
-  position: absolute;
-  top: 0;
+
+
+
+.navbar-inverse .navbar-nav>li>a,
+.navbar-inverse .navbar-nav>li>a {
+  color: #fff;
+ 
 }
 
 .navbar-inverse .navbar-nav>li>a:focus,
@@ -52,7 +48,6 @@
 
 .navbar-inverse .navbar-nav> .open>li>a:focus,
 .navbar-inverse .navbar-nav> .open>li>a:hover {
-  color: #fff;
   background-color: #003300;
 }
 .navbar-inverse {
@@ -89,22 +84,31 @@
   /*background: #003300;*/
   /*color: #ffffff;*/
 /*}*/
-/*.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {*/
-  /*background-color: #009966;*/
-  /*color: #eeeeee;*/
-/*}*/
-/*.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover {*/
-  /*color: #003300*/
-/*}*/
-/*.navbar-inverse .navbar-nav .open .dropdown-menu {*/
-  /*background-color: #009966;*/
-  /*color: #eeeeee;*/
-/*}*/
-/*.navbar-inverse .navbar-brand {*/
-  /*color: #fff;*/
-  /*font-family: 'Indie Flower', cursive;*/
-  /*font-size: x-large;*/
-/*}*/
+
+/*
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+  background-color: #009966;
+  color: #eeeeee;
+}
+
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+ background-color: #003300;
+;
+
+}
+*/
+.navbar-inverse .navbar-nav .open .dropdown-menu {
+  background-color: #009966;
+  color: #eeeeee;
+    font-size: 16px;
+}
+
+.navbar-inverse .navbar-brand {
+  color: #fff;
+  font-family: 'Indie Flower', cursive;
+  font-size: x-large;
+    padding-right: 80px;
+}
 
 
 address {
@@ -113,9 +117,10 @@ address {
   margin: 0px;
 }
 body {
-  align: center;
-  padding: 0px 0px 0px 0px;
-  z-index: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
 
 }
 .tab-content {
@@ -135,6 +140,7 @@ body {
 
 .content {
   min-height: 650px;
+    position :relative;
 
 }
 
@@ -236,22 +242,110 @@ a{
 }
 
 .img-idea{
-  width: 350px;
-
   padding: 10px;
   margin: 5px;
 }
-#add_idea{
-  width: 350px;
-  height: 150px;
-  padding: 10px;
+.idea{
+    padding: 10px;
   margin: 5px;
-  background: darkcyan;
-  text-align: center;
-
+    width: 350px;
 }
 
 #pagination{
   position: absolute;
   bottom: 0px;
+}
+
+.hidden{
+   display: none;
+}
+.carousel .item {
+    height: 350px;
+}
+
+
+.carousel .item img {
+  left: 0;
+  min-height: 350px;
+  position: absolute;
+  top: 0;
+}
+/*
+.carousel {
+  background: #1a237e;
+}
+*/
+
+.carousel .item img {
+  left: 0;
+  min-height: 350px;
+  position: absolute;
+  top: 0;
+}
+.carousel-caption >p{
+    font-size: 20px;
+}
+
+.small_pic_idea{
+  margin: 2px;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  vertical-align: top;
+  float: left;
+}
+
+.content_idea{
+  border: 1px solid #dedede;
+  padding: 10px;
+  border-radius: 2px;
+
+
+}
+.btn-mysuccess:hover,
+.btn-mysuccess:focus
+{
+  color: #fff;
+  background-color: #0ac2a9;
+}
+.btn-mysuccess{
+  background: #0cb09b 0 -15px;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 1px 1px rgba(29,103,61,0.65);
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  border-radius: 2px;
+
+}
+.add-idea-wrapper{
+background-image: url("http://www.ikea.com/ms/media/cho_room/20151/media/20151_colm04a/20151_colm04a_01_PH121191.jpg");
+}
+.passion-wrapper {
+
+ 
+  background: rgba(19,52,128,0.61);;
+  padding: 12px;
+  color: #FFF;
+  border-radius: 2px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 10px;
+  text-align: center;
+}
+
+.passion-wrapper:hover {
+  background: rgba(9, 70, 128, 0.61);;}
+.article-wrapper{
+
+
 }

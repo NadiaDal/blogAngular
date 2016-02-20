@@ -1,11 +1,11 @@
-<div class="container content" ng-controller="articlesController">
+<div class="container content " ng-controller="articlesController">
     <div class="row" >
         <div class="col-xs-12" ng-if="!showArticles">
             {{message}}
         </div>
-        <div ng-show=""></div>
 
-        <div class="col-xs-9" ng-if="showArticles">
+        <div class="col-xs-12 col-sm-8 " ng-if="showArticles">
+            <div class="article-wrapper">
             <div class="media" ng-repeat="article in filteredArticles  | orderBy: '-date'">
                 <div class="media-left">
                     <img ng-src="">
@@ -20,6 +20,22 @@
                 </div>
 
             </div>
+                </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-4">
+            <div class="row">
+                <div class="">
+                <div class="passion-wrapper">
+                    <h3>Add You Idea</h3>
+                    <p>To create you own design</p>
+                </div>
+                    </div>
+
+            </div>
+            <div class="row"></div>
+            <div class="row "></div>
+
         </div>
 
 
@@ -43,3 +59,12 @@
     </div>
 
 </div>
+
+<!--var month = function(){-->
+<!--var month = ["january", "february", "march","april", "may",-->
+<!--"june","july","august", "september", "october", "November"];-->
+<!--return {-->
+<!--name : function(num){return month[num];},-->
+<!--number : function(name){return month.indexOf(name);}-->
+<!--}-->
+<!--}(); -->
