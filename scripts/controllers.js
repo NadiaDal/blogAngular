@@ -19,7 +19,7 @@ angular.module('blogApp')
     .controller('articlesController', ['articleFactory', '$scope',
         function (articleFactory, $scope) {
             //var vm = this;
-            $scope.showArticles = true;
+            $scope.showArticles = false;
             $scope.message = "Loading ..";
             $scope.articles = {};
             $scope.filteredArticles = {};
@@ -35,9 +35,11 @@ angular.module('blogApp')
             articleFactory.getArticles()
                 .then(
                     function (response) {
+                        $scope.showArticles = true;
                         $scope.articles = response.data;
+
                         $scope.totalItems = $scope.articles.length;
-                       // console.log("totalItems: " +$scope.totalItems);
+                        // console.log("totalItems: " +$scope.totalItems);
                         $scope.$watch('currentPage + itemsPerPage',
                             function () {
 
@@ -46,7 +48,7 @@ angular.module('blogApp')
 
                                 $scope.filteredArticles = $scope.articles.slice(begin, end);
                             });
-                        $scope.showArticles = true;
+
                         $scope.pageCount = Math.ceil($scope.articles.length / $scope.itemsPerPage);
 
                     },
@@ -61,7 +63,7 @@ angular.module('blogApp')
             };
 
             $scope.pageChanged = function () {
-                console.log('Page changed to: ' + $scope.currentPage);
+                // console.log('Page changed to: ' + $scope.currentPage);
             };
 
         }])
@@ -131,10 +133,10 @@ angular.module('blogApp')
         }])
 
     .controller('adminArticleController', ['$scope', 'articleFactory', 'loginFactory', '$timeout', '$state', '$stateParams',
-        function ($scope, articleFactory, loginFactory, $timeout, $state,$stateParams ) {
+        function ($scope, articleFactory, loginFactory, $timeout, $state, $stateParams) {
             var vm = this;
             vm.articles = {};
-            vm.article ={};
+            vm.article = {};
             vm.errorMessage = "";
             vm.showAdminArticles = false;
             vm.successAdd = false;
@@ -152,8 +154,8 @@ angular.module('blogApp')
             vm.editArticle = editArticle;
             vm.addArticle = addArticle;
             vm.deleteArticle = addArticle;
-            
-             function author() {
+
+            function author() {
                 return loginFactory.getEmail();
             }
 
@@ -176,7 +178,7 @@ angular.module('blogApp')
                         }
                     );
             }
-            
+
             function getArticle() {
                 console.log("edit " + parseInt($stateParams.id, 10));
                 articleFactory.getArticle(parseInt($stateParams.id, 10))
@@ -219,7 +221,7 @@ angular.module('blogApp')
             }
 
             function addArticle() {
-                console.log("submit");
+                //console.log("submit");
                 vm.articleAdd.date = new Date();
                 articleFactory.addArticle(angular.copy(vm.articleAdd))
                     .then(
@@ -241,9 +243,88 @@ angular.module('blogApp')
                         });
             }
         }])
+    .controller('ModalInstanceLoginCtrl', ['$scope', '$uibModalInstance', 'item', 'loginFactory',
+        function ($scope, $uibModalInstance, item, loginFactory) {
+            $scope.emailErrorMessage = false;
+            $scope.passwordErrorMessage = false;
+            $scope.errorMessage = "";
+            $scope.item = item;
+            $scope.close = close;
+            $scope.save = save;
+            $scope.signUp = signUp;
+
+            $scope.alert = {
+                type: '',
+                msg: '',
+                show : false
+                };
+
+
+            $scope.closeAlert = function() {
+                $scope.alert = {
+                    type: '',
+                    msg: '',
+                    show : false
+                };
+            };
+
+
+            function close() {
+                $uibModalInstance.dismiss('cancel')
+            }
+            function save() {
+
+                loginFactory.logIn(item)
+                    .then(
+                        function (response) {
+
+                            $scope.item.login = true;
+                            loginFactory.setUnicode(response.data, item.email);
+                            //console.log(loginFactory.getUnicode());
+                            // console.log(loginFactory.getEmail());
+                            $uibModalInstance.close($scope.item);
+                        },
+                        function (response) {
+                            if (response.status == 400) {
+                                $scope.passwordErrorMessage = true;
+                                $scope.errorMessage = "Password does not correct!";
+
+
+                            } else if (response.status == 404) {
+
+                                $scope.errorMessage = "User does not exist!";
+                            } else {
+                                $scope.errorMessage = response.status + " " + response.statusText;
+                            }
+                        }
+                    );
+            }
+
+            function signUp() {
+                loginFactory.signUp(item)
+                    .then(
+                        function (response) {
+                            $scope.item.login = true;
+                            loginFactory.setUnicode(response.data, item.email);
+                            $uibModalInstance.close($scope.item);
+                        },
+                        function (response) {
+                            if (response.status == 409) {
+                                console.log("" + response.status);
+                                $scope.alert.show = true;
+                                $scope.alert.type = "danger";
+                                $scope.alert.msg =
+                                    "User with such email already exist";
+                            }
+                        }
+                    );
+            }
+
+
+        }])
 
     .controller('loginController', ['$uibModal',
-        'loginFactory', '$timeout', '$state',
+        '$timeout', '$state','loginFactory',
         function ($uibModal, $timeout, $state, loginFactory) {
 
             var vm = this;
@@ -282,21 +363,25 @@ angular.module('blogApp')
                         );
                 }
             }
-
             function signUp() {
-                vm.rs = {};
-                loginFactory.signUp(angular.copy(vm.user))
-                    .then(
-                        function (_) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/loginModal.html',
+                    controller: 'ModalInstanceLoginCtrl',
+                    resolve: {
+                        item: {}
+                    }
+                });
 
-                        },
-                        function (response) {
-                            if (response.status == 409) {
-                                console.log("" + response.status);
-                                vm.errorMessage = " User with this email already exist!";
-                            }
-                        }
-                    );
+                modalInstance.result.then(
+                    function (item) {
+                        vm.login = item.login;
+                    },
+                    //dismiss callback
+                    function () {
+                        console.log('Modal dismissed at: ' + new Date());
+                    });
+
             }
 
             function logIn() {
@@ -337,7 +422,6 @@ angular.module('blogApp')
             vm.tab = 1;
             vm.filtText = '';
             vm.image = '';
-            vm.onhoover = true;
             vm.showTax = false;
             vm.stuff = {};
             vm.allByID = [];
@@ -345,7 +429,6 @@ angular.module('blogApp')
             vm.getStuff = getStuff();
             vm.isSelected = isSelected;
             vm.getTotal = getTotal;
-            vm.checkTax = checkTax;
             vm.editStuff = editStuff;
             vm.addStuff = addStuff;
             vm.deleteStuff = deleteStuff;
@@ -353,12 +436,16 @@ angular.module('blogApp')
             vm.showImg = showImg;
             vm.hideImg = hideImg;
             vm.openInNewTab = openInNewTab;
+            vm.setBorderTax = setBorderTax;
+            vm.getBorderTax = getBorderTax;
+            var limitPrice = 2250;
+            var limitWeight = 50;
 
             function getStuff() {
                 stuffFactory.getStuff()
                     .then(
                         function (response) {
-                            vm.stuff = response.data;
+                            vm.stuff = response.data.map(setBorderTax);
                             vm.stuff.forEach(function (element) {
                                 vm.allByID[element.id] = element;
                             })
@@ -403,12 +490,10 @@ angular.module('blogApp')
             }
 
             function getTotal() {
-                //console.log("filtered: "+ vm.filtered);
                 var result = 0;
                 vm.filtered.forEach(function (el) {
                     result += el.price * el.num;
                 });
-                // console.log(result);
                 return result;
             }
 
@@ -433,7 +518,7 @@ angular.module('blogApp')
                             .then(
                                 function () {
                                     getStuff();
-                                    console.log("stuff updated");
+                                    //console.log("stuff updated");
                                 },
                                 function () {
                                 }
@@ -441,7 +526,7 @@ angular.module('blogApp')
                     },
                     //dismiss callback
                     function () {
-                        console.log('Modal dismissed at: ' + new Date());
+                        // console.log('Modal dismissed at: ' + new Date());
                     });
             }
 
@@ -451,13 +536,23 @@ angular.module('blogApp')
                     templateUrl: 'views/addStuffModal.html',
                     controller: 'ModalInstanceStuffCtrl',
                     resolve: {
-                        item: {}
+                        item: {
+                            name: "",
+                            num: 0,
+                            price: 0,
+                            room: "",
+                            link: "",
+                            image: "",
+                            currency: "",
+                            weight: 0
+                        }
                     }
                 });
 
                 modalInstance.result
                     .then(
                         function (item) {
+                            console.log(item);
                             stuffFactory.addStuff(item).then(
                                 function (_) {
                                     getStuff();
@@ -466,30 +561,40 @@ angular.module('blogApp')
                                 }
                             )
                         },
-                        //close callback
-
-                        //dismiss callback
                         function () {
-                            console.log('Modal dismissed at: ' + new Date());
+                            //  console.log('Modal dismissed at: ' + new Date());
                         });
             }
 
-            function checkTax(price, weight, id) {
-                //console.log(typeof price);
-                var p = parseInt(price);
-                var w = parseInt(weight);
-                var limitPrice = 2250;
-                var limitWeight = 50;
+            /*assume that 20% have to pay from all price*/
+            function setBorderTax(item) {
+                var p = parseInt(item.price);
+                var w = parseInt(item.weight);
+                var borderTax = 0;
                 if (p > limitPrice) {
-                    vm.showTax = true;
-                    vm.allByID.id;
-                    return (p - limitPrice) * 0.1 + p * 0.2;
+                    borderTax = Math.ceil((p - limitPrice) * 0.1 + p * 0.2);
+                    item.showTax = true;
+                    item.borderTax = borderTax;
+                    return item;
                 } else if (w > limitWeight) {
-                    vm.showTax = true;
-                    return p / w * (w - limitWeight) * 0.1 + p * 0.2;
+                    borderTax = Math.ceil(p / w * (w - limitWeight) * 0.1 + p * 0.2);
+                    item.showTax = true;
+                    item.borderTax = borderTax;
+                    return item;
                 } else {
-                    vm.showTax = false;
+                    item.showTax = false;
+                    item.borderTax = borderTax;
+                    return item;
                 }
+            }
+
+            function getBorderTax() {
+                var result = 0;
+                vm.filtered.forEach(function (el) {
+                    result += el.borderTax;
+                });
+                // console.log("getBorderTax :" + result);
+                return result;
             }
 
 
@@ -509,39 +614,42 @@ angular.module('blogApp')
             }
         }])
 
-    .controller('ideasController', ['ideasFactory','$stateParams',
-        function (ideasFactory,$stateParams) {
+    .controller('ideasController', ['ideasFactory', '$stateParams',
+        function (ideasFactory, $stateParams) {
             var vm = this;
             vm.myInterval = 4000;
             vm.noWrapSlides = false;
             vm.ideas = {};
             vm.getIdeas = getIdeas();
-                    
-            
+            vm.setActive =setActive;
+
+
+            function setActive(id){
+                vm.ideas[parseInt(id)].active = true;
+            }
+
             function getIdeas() {
                 vm.ideas = ideasFactory.getIdeas();
-                //console.log(vm.ideas);
+                console.log(vm.ideas);
             }
-            
-            
-            
+
+
         }])
 
-.controller('ideaController', ['ideasFactory','$stateParams',
-        function (ideasFactory,$stateParams) {
+    .controller('ideaController', ['ideasFactory', '$stateParams',
+        function (ideasFactory, $stateParams) {
             var vm = this;
-            vm.idea={};
+            vm.idea = {};
             vm.getIdea = getIdea();
-            
-            function getIdea(){
-                vm.idea = ideasFactory.getIdea(parseInt($stateParams.id, 10));
-         
-                
-            }
-            
-            
-        }])
 
+            function getIdea() {
+                vm.idea = ideasFactory.getIdea(parseInt($stateParams.id, 10));
+
+
+            }
+
+
+        }])
 
     .controller('ModalInstanceStuffCtrl', ['$scope', '$uibModalInstance', 'item',
         function ($scope, $uibModalInstance, item) {
@@ -554,47 +662,6 @@ angular.module('blogApp')
             };
         }])
 
-    .controller('ModalInstanceLoginCtrl', ['$scope', '$uibModalInstance', 'item', 'loginFactory',
-        function ($scope, $uibModalInstance, item, loginFactory) {
-
-
-            $scope.item = item;
-
-            $scope.close = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-
-            $scope.save = function () {
-                $scope.emailErrorMessage = false;
-                $scope.passwordErrorMessage = false;
-                $scope.errorMessage = "";
-
-                loginFactory.logIn(item)
-                    .then(
-                        function (response) {
-
-                            $scope.item.login = true;
-                            loginFactory.setUnicode(response.data, item.email);
-                            //console.log(loginFactory.getUnicode());
-                           // console.log(loginFactory.getEmail());
-                            $uibModalInstance.close($scope.item);
-                        },
-                        function (response) {
-                            if (response.status == 400) {
-                                $scope.passwordErrorMessage = true;
-                                $scope.errorMessage = "Password does not correct!";
-
-
-                            } else if (response.status == 404) {
-                                $scope.emailErrorMessage = true;
-                                $scope.errorMessage = "User does not exist!";
-                            } else {
-                                $scope.errorMessage = response.status + " " + response.statusText;
-                            }
-                        }
-                    );
-            };
-        }])
-;
+   ;
 
 

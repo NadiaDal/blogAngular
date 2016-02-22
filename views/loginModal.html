@@ -1,56 +1,141 @@
-<div class="modal-header">
-    <button type="button" class="close" ng-click="close()"> &times;
-    </button>
-    <h4 class="modal-title">
-        Log in
-    </h4>
-</div>
-<div class="modal-body">
-      <div ng-show="passwordErrorMessage || emailErrorMessage" class="alert alert-danger">
-                                   {{errorMessage}}
-                               </div>
+<!--<div class="">-->
+<!--<button type="button" class="close" ng-click="close()"> &times;-->
+<!--</button>-->
+<!--</div>-->
+<uib-tabset justified="true">
+    <uib-tab heading="Log in">
+           <div class="modal-body">
+            <div ng-show="passwordErrorMessage || emailErrorMessage" class="alert alert-danger">
+                {{errorMessage}}
+            </div>
 
-    <form class="form-horizontal"
-          ng-submit="save()" name = 'loginForm'>
-        <div class="form-group" ng-class="{'has-error': loginForm.email.$error.required && loginForm.email.$dirty}">
-            <label class="sr-only" for="email">Email adress</label>
-            <div class="col-xs-12">
-                <input type="email" class="form-control input-sm" id="email" name="email"
-                       placeholder="Email" ng-model="item.email" ng-blur="checkEmail()" required>
+            <form class="form-horizontal"
+                  ng-submit="save()" name='loginForm'>
+                <div class="form-group"
+                     ng-class="{'has-error': loginForm.email.$error.required && loginForm.email.$dirty}">
+                    <label class="sr-only" for="email">Email adress</label>
+                    <div class="col-xs-12">
+                        <input type="email" class="form-control input-sm" id="email" name="email"
+                               placeholder="Email" ng-model="item.email" ng-blur="checkEmail()" required>
 
                             <span ng-show="loginForm.email.$error.required && loginForm.email.$dirty"
                                   class="help-block">
                                 Your email is required</span>
 
 
-            </div>
-        </div>
-        <div class="form-group" ng-class="{'has-error': loginForm.password.$error.required && loginForm.password.$dirty}">
-            <label class="sr-only" for="password">Password</label>
-            <div class="col-xs-12">
-                <input type="password" class="form-control input-sm" id="password"
-                       name="password"
-                       placeholder="Password"
-                       ng-model="item.password" required>
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error': loginForm.password.$error.required && loginForm.password.$dirty}">
+                    <label class="sr-only" for="password">Password</label>
+                    <div class="col-xs-12">
+                        <input type="password" class="form-control input-sm" id="password"
+                               name="password"
+                               placeholder="Password"
+                               ng-model="item.password" required>
                              <span ng-show="loginForm.password.$error.required && loginForm.password.$dirty
                              && !passwordErrorMessage"
                                    class="help-block">Your password is required
                              </span>
 
-            </div>
-        </div>
+                    </div>
+                </div>
 
-        <div class="checkbox">
-            <label>
-                <input type="checkbox"> Remember me
-            </label>
-        </div>
-        <div class="form-group">
-            <div class="col-xs-12">
-                <button id="singin" type="submit" class="btn btn-info btn-sm"
-                        ng-disabled="loginForm.$invalid">Sign in</button>
-            </div>
-        </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Remember me
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <button id="singin" type="submit"
+                                class="btn btn-success btn-md"
+                                ng-disabled="loginForm.$invalid">
+                            Sign in
+                        </button>
+                    </div>
+                </div>
 
-    </form>
-</div>
+            </form>
+        </div>
+    </uib-tab>
+    <uib-tab heading="Sign up">
+        <div class="modal-body">
+            <h3 class="modal-title">
+                Create a Blog Account
+            </h3>
+            <uib-alert ng-show="alert.show"  type="{{alert.type}}" close="closeAlert()">
+                {{alert.msg}}
+            </uib-alert>
+            <form class="form-horizontal" role="form" name="signupForm"
+                  ng-submit="signUp()" novalidate>
+                <div class="form-group"
+                     ng-class="{'has-error' : signupForm.name.$error.required &&
+                    !signupForm.name.$pristine }">
+                    <label class="sr-only" for="name">Name</label>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" id="name" name="name"
+                               placeholder="Name" ng-model="item.name" required>
+                            <span ng-show="signupForm.name.$error.required &&
+                    !signupForm.name.$pristine" class="help-block"> Your name is required.</span>
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error' : signupForm.email.$error.required &&
+                        !signupForm.email.$pristine}">
+
+                    <label class="sr-only" for="email">Email adress</label>
+                    <div class="col-xs-12">
+                        <input type="email" class="form-control" id="" name="email"
+                               placeholder="Email" ng-model="item.email"
+                               ng-blur="checkEmail()" required>
+                        <span ng-show="signupForm.email.$error.required && !signupForm.email.$pristine"
+                              class="help-block">Your email is required.</span>
+
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error' : signupForm.password.$error.required
+                      &&
+                         !signupForm.password.$pristine
+                         }"
+                >
+                    <label class="sr-only" for="password">Password</label>
+                    <div class="col-xs-12">
+                        <input type="password" class="form-control"  name="password"
+                               placeholder="Password" ng-model="item.password" required>
+                            <span ng-show="signupForm.password.$error.required &&
+                         !signupForm.password.$pristine" class="help-block">Your password is required</span>
+                    </div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> Remember me
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <button type="submit" class="btn btn-success btn-md"
+                                ng-disabled="signupForm.$invalid">
+                            Create New Account
+                        </button>
+                    </div>
+                </div>
+
+
+            </form>
+            <br>
+
+            <form>
+                <div class="form-group">
+                    <h4>Do you have a Google Account?</h4>
+                    <button type="submit" class="btn btn-success btn-md"
+                            ng-disabled="true">Sign up with Google</button>
+                </div>
+            </form>
+            <br>
+            <p class="login">Already have an account? <a data-toggle="modal" data-target="#loginModal">Log in</a></p>
+
+        </div>
+    </uib-tab>
+</uib-tabset>

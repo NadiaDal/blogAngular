@@ -1,20 +1,5 @@
 <div  ng-controller="loginController as loginCtrl">
-    <div class="login">
-        <ul class="nav navbar-nav navbar-right">
-            <li><a ui-sref="app.signup">
-                <span class="glyphicon glyphicon-ok-sign"></span>
-                Sign up</a></li>
-            <li id="logIn"><a ng-click="loginCtrl.logIn()" ng-show="!loginCtrl.login">
-                <span class="glyphicon glyphicon-log-in"></span>
-                Log in</a></li>
-
-            <li id="logOut"><a ng-click="loginCtrl.logOut()" ng-show="loginCtrl.login">
-                <span class="glyphicon glyphicon-log-out"></span>
-                Log out</a></li>
-        </ul>
-    </div>
-
-<header class="jumbotron">
+ <header class="jumbotron">
     <div class="container">
         <div ng-show="loginCtrl.login" id="go_admin">
             <a class="btn btn-sm btn-default" ui-sref="app.admin">
@@ -40,7 +25,7 @@
                ui-sref="app"><span>Нome Sweet home</span></a>
         </div>
     <div id="navbarID" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav ul-nav">
+            <ul class="nav navbar-nav">
                 <li><a ui-sref="app">
                     Home</a></li>
 
@@ -62,6 +47,16 @@
                     <a ui-sref="app.ideas">Ideas</a>
                 </li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+            <li id="logIn"><a ng-click="loginCtrl.logIn()" ng-show="!loginCtrl.login">
+                <span class="glyphicon glyphicon-log-in"></span>
+                Log in</a></li>
+
+            <li id="logOut"><a ng-click="loginCtrl.logOut()" ng-show="loginCtrl.login">
+                <span class="glyphicon glyphicon-log-out"></span>
+                Log out</a></li>
+             </ul>
 
         </div>
 </nav>

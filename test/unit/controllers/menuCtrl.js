@@ -1,6 +1,6 @@
 describe('Controller : articlesController',
     function () {
-        beforeEach(modules('blogApp'));
+        beforeEach(module('blogApp'));
 
         var ArticlesController, scope, $httpBackend;
 
@@ -9,7 +9,7 @@ describe('Controller : articlesController',
             $httpBackend = _$httpBackend_;
 
             $httpBackend.expectGET("http://localhost/blogAngular/api/index.php/articles")
-                .respond([
+                 .respond([
                 {
                     "id": "7",
                     "title": "Donec convallis et sem in tristique.",
@@ -63,13 +63,23 @@ describe('Controller : articlesController',
             $httpBackend.flush();
         }));
 
-        it('should have showArticles as false', function(){
-            expect(scope.showArticles).toBeFalsy();
-        });
-
         it('should create articles witt 7 articles fetched from xhr', function(){
             expect(scope.showArticles).toBeTruthy();
             expect(scope.articles).toBeDefined();
-            expect(scope.articles.length()).toBe(7);
+            expect(scope.articles.length).toBe(7);
+            expect(scope.filteredArticles.length).toBe(3);
+        });
+
+        it('should paginate', function(){
+            expect(scope.filteredArticles).toBeDefined();
+            expect(scope.filteredArticles.length).toBe(3);
+            expect(scope.pageCount).toBe(3);
+            expect(scope.currentPage).toBe(1);
+            scope.setPage(3);
+            scope.$digest();
+            expect(scope.currentPage).toBe(3);
+            expect(scope.filteredArticles.length).toBe(1);
+            expect(scope.filteredArticles[0].id).toBe("36");
+
         });
     });

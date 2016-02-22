@@ -21,85 +21,54 @@
 
                 </ul>
             </div>
-
             <a id="add_stuff" class="btn btn-success" type="button" class=""
                ng-click="stuffCtrl.addStuff()" style="width: 100%">
                 <span></span> Add stuff</a>
-
             <div class="row stuff_total">
                 <div class="col-xs-offset-1 col-xs-11">
-                    <p>Total costs: <br>
-                        <span class="">{{stuffCtrl.getTotal()| number:0 }} </span></p>
-                    <p>Total remboursable: <br><span class=" ">{{stuffCtrl.getTotal()*0.23| number:0 }}</span> </p>
-                    <p>Total border tax: <br><span class=" ">{{0| number:0 }} </span></p>
-                    </div>
-
+                    <p>Total costs: <br><span class="">
+                        {{stuffCtrl.getTotal()| number:0 }} </span></p>
+                    <p>Total reimbursable: <br><span class=" ">
+                        {{stuffCtrl.getTotal()*0.23| number:0 }}</span></p>
+                    <p>Total border tax: <br><span class=" ">
+                        {{stuffCtrl.getBorderTax() | number:0 }} </span></p>
+                </div>
             </div>
-
-
         </div>
         <div class="col-xs-12 col-sm-9">
-
-
             <table class="table table-hover table-responsive">
-                <!--<tr class="success">-->
-                    <!--<th></th>-->
-                    <!--<th>Name</th>-->
-                    <!--&lt;!&ndash;<th></th>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<th>Link</th>&ndash;&gt;-->
-                    <!--<th>C</th>-->
-                    <!--<th>Price</th>-->
-
-                    <!--&lt;!&ndash;<th>Q</th>&ndash;&gt;-->
-                    <!--<th>Total</th>-->
-                    <!--<th>Edit</th>-->
-                    <!--<th>Delete</th>-->
-                <!--</tr>-->
-
-                <tr ng-mouseover="stuffCtrl.showImg()" ng-mouseleave="stuffCtrl.hideImg()"
-
-                    ng-repeat="s in stuffCtrl.filtered = (stuffCtrl.stuff | toArray : false | filter:stuffCtrl.filtText)">
+                <tr ng-repeat="s in stuffCtrl.filtered =
+                 (stuffCtrl.stuff | toArray : false | filter:stuffCtrl.filtText)">
                     <td>
-                        <img class="img-responsive" ng-show="stuffCtrl.onhoover" width="120" ng-src="{{s.image}}"
+                        <img class="img-responsive"  width="120" ng-src="{{s.image}}"
                              ng-click="stuffCtrl.openInNewTab({url:s.link})">
-
                     </td>
                     <td>{{s.name}}
-
-
                             <span class="label label-danger label-xs"
-                                  ng-show="stuffCtrl.showTax">
-                                {{stuffCtrl.checkTax(s.price, s.weight,s.id) | number :0}}
+                                  ng-show="s.showTax">
+                                {{s.borderTax}}
                             </span>
                            <span class="label label-success label-xs">
                             {{-s.price*s.num*0.23 | number: 0}}</span>
                     </td>
                     <td>{{s.currency}}</td>
                     <td align="right">{{s.price}}
-
-                        <td align="right">{{s.num}}</td>
-                    <td align="right">{{s.price*s.num+stuffCtrl.checkTax(s.price, s.weight)| number: 0}}</td>
+                    <td align="right">{{s.num}}</td>
+                    <td align="right">{{s.price*s.num+s.borderTax | number: 0}}</td>
                     <td><a ng-click="stuffCtrl.editStuff({id : s.id})">
                         <span class="glyphicon glyphicon-pencil"></span></a></td>
                     <td><a ng-click="stuffCtrl.deleteStuff({id:s.id})">
                         <span class="glyphicon glyphicon-trash"></span></a></td>
-
                 </tr>
                 <tr>
                     <th></th>
                     <th></th>
-                    <!--<th></th>-->
-                    <!--<th></th>-->
-
                     <th></th>
-                    <!--<th></th>-->
-                    <!--<th></th>-->
                     <th align="right"></th>
                     <th></th>
                     <th></th>
                     <th></th>
                 </tr>
-
             </table>
 
         </div>
