@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('blogApp')
-    .constant("baseURL", "http://localhost/blogAngular/api/index.php/")
-//    .constant("baseURL", "http://my-homesweethome.rhcloud.com/api/index.php/")
+    //.constant("baseURL", "http://localhost/blogAngular/api/index.php/")
+  .constant("baseURL", "http://my-homesweethome.rhcloud.com/api/index.php/")
 
 
     .service('articleFactory', ['$http', 'baseURL',
