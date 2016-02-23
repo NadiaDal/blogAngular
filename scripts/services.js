@@ -5,6 +5,7 @@ angular.module('blogApp')
   .constant("baseURL", "http://my-homesweethome.rhcloud.com/api/index.php/")
 
 
+
     .service('articleFactory', ['$http', 'baseURL',
         function ($http, baseURL) {
 
