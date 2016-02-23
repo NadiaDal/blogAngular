@@ -1,0 +1,46 @@
+<div class="container content" ng-controller="stuffController as stuffCtrl">
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="calculator">
+               <span>Plytka</span><br>
+
+                Total quantity : 100<br>
+                Price for m : 25<br>
+                % of damage : 10<br>
+               <span> <p>Total amount: 2750</p></span>
+            </div>
+
+            <div class="calculator">
+                <span>Plytka</span><br>
+
+                Total quantity : 100<br>
+                Price for m : 25<br>
+                % of damage : 10<br>
+                <span> <p>Total amount: 2750</p></span>
+            </div>
+
+        </div>
+        <div class="col-sm-7">
+            <table class="table table-hover table-responsive">
+                <tr ng-repeat="s in stuffCtrl.filtered =
+                 (stuffCtrl.stuff | toArray : false | filter:stuffCtrl.filtText)">
+                    <td>
+                        <img class="img-responsive"  width="120" ng-src="{{s.image}}"
+                             ng-click="stuffCtrl.openInNewTab({url:s.link})">
+                    </td>
+                    <td>{{s.name}}</td>
+                    <td>{{s.currency}}</td>
+                    <td align="right">{{s.price}}
+                    <td align="right">
+                     <span class="glyphicon glyphicon-th"></span>
+                </td>
+                    <td><a ng-click="stuffCtrl.editStuff({id : s.id})">
+                        <span class="glyphicon glyphicon-pencil"></span></a></td>
+                    <td><a ng-click="stuffCtrl.deleteStuff({id:s.id})">
+                        <span class="glyphicon glyphicon-trash"></span></a></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>

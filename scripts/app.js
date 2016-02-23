@@ -101,6 +101,27 @@ angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-t
                     }
                 }
             })
+
+            .state('app.materials',{
+                url : "materials",
+                views: {
+                    "content@" : {
+                        templateUrl : 'views/materials.html',
+                        controller : 'stuffController'
+                    }
+                }
+            })
+
+            .state('app.total',{
+                url : "total",
+                views: {
+                    "content@" : {
+                        templateUrl : 'views/total.html',
+                        controller : ''
+                    }
+                }
+            });
+
           
         
         $urlRouterProvider.otherwise('/');

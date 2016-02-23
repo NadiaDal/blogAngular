@@ -68,9 +68,9 @@ angular.module('blogApp')
 
         }])
 
-    .controller('articleDetailController', ['commentFactory',
+    .controller('articleDetailController', ['$scope', 'commentFactory',
         'articleFactory', '$stateParams', '$log',
-        function (commentFactory, articleFactory, $stateParams, $log) {
+        function ($scope, commentFactory, articleFactory, $stateParams, $log) {
             var vm = this;
             vm.article = {};
             vm.comments = {};
@@ -82,6 +82,7 @@ angular.module('blogApp')
             vm.getArticle = getArticle();
             vm.getComments = getComments();
             vm.submit = submit;
+            vm.commentForm = commentForm;
 
             function getArticle() {
                 articleFactory.getArticle(parseInt($stateParams.id, 10))
@@ -114,7 +115,7 @@ angular.module('blogApp')
                     .then(
                         function () {
                             reset();
-                            vm.commentForm.$setPristine();
+                            $scope.commentForm.$setPristine();
                             getComments();
                         },
                         function () {
@@ -256,15 +257,15 @@ angular.module('blogApp')
             $scope.alert = {
                 type: '',
                 msg: '',
-                show : false
-                };
+                show: false
+            };
 
 
-            $scope.closeAlert = function() {
+            $scope.closeAlert = function () {
                 $scope.alert = {
                     type: '',
                     msg: '',
-                    show : false
+                    show: false
                 };
             };
 
@@ -272,6 +273,7 @@ angular.module('blogApp')
             function close() {
                 $uibModalInstance.dismiss('cancel')
             }
+
             function save() {
 
                 loginFactory.logIn(item)
@@ -324,7 +326,7 @@ angular.module('blogApp')
         }])
 
     .controller('loginController', ['$uibModal',
-        '$timeout', '$state','loginFactory',
+        '$timeout', '$state', 'loginFactory',
         function ($uibModal, $timeout, $state, loginFactory) {
 
             var vm = this;
@@ -363,6 +365,7 @@ angular.module('blogApp')
                         );
                 }
             }
+
             function signUp() {
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -614,17 +617,19 @@ angular.module('blogApp')
             }
         }])
 
-    .controller('ideasController', ['ideasFactory', '$stateParams',
-        function (ideasFactory, $stateParams) {
+    .controller('ideasController', ['ideasFactory',
+        function (ideasFactory) {
             var vm = this;
             vm.myInterval = 4000;
             vm.noWrapSlides = false;
+
             vm.ideas = {};
             vm.getIdeas = getIdeas();
-            vm.setActive =setActive;
+            vm.setActive = setActive;
+            vm.addIdea = addIdea;
 
 
-            function setActive(id){
+            function setActive(id) {
                 vm.ideas[parseInt(id)].active = true;
             }
 
@@ -633,8 +638,68 @@ angular.module('blogApp')
                 console.log(vm.ideas);
             }
 
+            function addIdea() {
+                console.log("add idea");
+                vm.display = 'block';
+            }
+
 
         }])
+    .controller('plansController', ['plansFactory','$uibModal',
+        function (plansFactory,$uibModal) {
+            var vm = this;
+            vm.plans = {};
+            vm.parametrs ={};
+            vm.item = {};
+            vm.getPlans = getPlans();
+            vm.getParametrs= getParameters();
+            vm.openPlanModal = openPlanModal;
+
+            function getPlans() {
+                vm.plans = plansFactory.getPlans();
+            }
+
+            function getParameters(){
+                vm.parametrs = plansFactory.getParameters();
+            }
+
+
+            function openPlanModal(image, size) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: 'views/planModal.html',
+                    controller: 'ModalInstancePlanCtrl',
+                    size: "lg",
+                    resolve: {
+                        item: function(){
+                            vm.item.image = image;
+                           return  vm.item;
+                        }
+                    }
+                });
+
+                modalInstance.result
+                    .then(
+                        function () {
+                           },
+                        function () {
+                            //  console.log('Modal dismissed at: ' + new Date());
+                        });
+            }
+
+        }])
+
+    .controller('ModalInstancePlanCtrl', ['$scope', '$uibModalInstance', 'item',
+        function ($scope, $uibModalInstance, item) {
+            $scope.item = item;
+            $scope.close = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+            //$scope.save = function () {
+            //    $uibModalInstance.close($scope.item);
+            //};
+        }])
+
 
     .controller('ideaController', ['ideasFactory', '$stateParams',
         function (ideasFactory, $stateParams) {
@@ -644,8 +709,6 @@ angular.module('blogApp')
 
             function getIdea() {
                 vm.idea = ideasFactory.getIdea(parseInt($stateParams.id, 10));
-
-
             }
 
 
@@ -662,6 +725,6 @@ angular.module('blogApp')
             };
         }])
 
-   ;
+;
 
 
