@@ -73,8 +73,8 @@ angular.module('blogApp', ['ui.router', 'ngResource',
             }
              })
 
-            .state('app.plan', {
-                url : 'plan',
+            .state('app.plans', {
+                url : 'plans',
                 views: {
                     'content@' : {
                         templateUrl : 'views/plan.html',

@@ -5,7 +5,40 @@
                 <li><a ui-sref="app">Home</a></li>
                 <li class="active">Plans</li>
             </ul>
-            <div class="plan-sticker">
+            <div class="hide-me" ng-hide="plansCtrl.myCheck">
+                <span class="close-me" ng-click="plansCtrl.closePlan()">Close</span>
+                <br>
+                <form class="form-horizontal" name="addPlanForm">
+                    <div class="form-group">
+                        <!--{{ideasCtrl.idea.title}}-->
+                        <input class="form-control "
+                               type="text"
+                               ng-model="ideasCtrl.idea.title"
+                               placeholder="Title"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <!--{{ideasCtrl.idea.image}}-->
+                        <input class="form-control "
+                               type="url"
+                               ng-model="ideasCtrl.idea.image"
+                               placeholder="Plan link"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <!--{{ideasCtrl.idea.description}}-->
+                        <textarea class="form-control "
+                                  rows="2"
+                                  ng-model="ideasCtrl.idea.description"
+                                  placeholder="Descrioption"
+                                  required>
+                        </textarea>
+                    </div>
+                    <span type="submit" class="close-me" ng-click="plansCtrl.savePlan()">Save</span>
+                </form>
+            </div>
+            <div ng-click="plansCtrl.addPlan()"
+                 class="plan-sticker">
                 Just click here<br> to add new one!
             </div>
         </div>

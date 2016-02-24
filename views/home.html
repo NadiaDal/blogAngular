@@ -1,40 +1,45 @@
 <div class="container content " ng-controller="articlesController">
-    <div class="row" >
+    <div class="row">
         <div class="col-xs-12" ng-if="!showArticles">
             {{message}}
         </div>
 
         <div class="col-xs-12 col-sm-8 " ng-if="showArticles">
             <div class="article-wrapper">
-            <div class="media" ng-repeat="article in filteredArticles  | orderBy: '-date'">
-                <div class="media-left">
-                    <img ng-src="">
-                </div>
-                <div class="media-body">
-                    <h2>
-                        <a ui-sref="app.article({id: article.id})">{{article.title}}</a>
-                    </h2>
-                    <small>{{article.date}}</small>
+                <div class="media" ng-repeat="article in filteredArticles  | orderBy: '-date'">
+                    <div class="media-left">
+                        <img ng-src="">
+                    </div>
+                    <div class="media-body">
+                        <h2>
+                            <a ui-sref="app.article({id: article.id})">{{article.title}}</a>
+                        </h2>
+                        <small>{{article.date}}</small>
 
-                    <p class="subText">{{article.content.substr(0, 250) + "..."}}</p>
-                </div>
+                        <p class="subText">{{article.content.substr(0, 250) + "..."}}</p>
+                    </div>
 
+                </div>
             </div>
-                </div>
         </div>
 
         <div class="col-xs-12 col-sm-4">
             <div class="row">
-                <div class="board">
+
                 <div class="add-idea-sticker">
                     So you could<br>
                     add or remove<br>
-                   nice furniture<br>
-                   to your lovely house
-                    <br> just click<a ui-sref="app.furniture"><span> here</span></a> <br>
+                    nice furniture<br>
+                    to your lovely house
+                    <br> just click
+                    <span class="click-here-home">
+                        <a ui-sref="app.furniture">here</a>
+                    </span> <br>
                 </div>
                 <div class="plan-sticker">
-                    Just click here<br> to add plan or replaning!<br>
+                    Just click
+                    <span class="click-here-home"><a ui-sref="app.plans">here</a></span><br> to add plan or
+                    replaning!<br>
                     Also add here <br>
                     main paraments!
                 </div>
@@ -42,11 +47,13 @@
                     <div class="rotate">
                         PS: Do not forget <br>
                         to collect<br> and add
-                       here <br>ideas in images! <br>;-)
+                        <span class="click-here-home">
+                            <a ui-sref="app.ideas">here</a>
+                        </span> <br>ideas in images! <br>;-)
                     </div>
-                    </div>
-
                 </div>
+
+
             </div>
             <div class="row"></div>
             <div class="row "></div>
@@ -56,19 +63,19 @@
 
     </div>
 
-        <div id = "pagination" class="col-xs-12">
-            <uib-pagination total-items="totalItems"
-                            items-per-page="itemsPerPage"
-                            ng-model="currentPage"
-                            boundary-links="true"
-                            max-size ="max_size"
-                            class="pagination-sm"
-                            previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
-                            last-text="&raquo;">
-            </uib-pagination>
-            <!--<pre>The selected page no: {{currentPage}}</pre>-->
-            <!--page="currentPage"-->
-            <!--on-select-page="setPage(page)"-->
+    <div id="pagination" class="col-xs-12">
+        <uib-pagination total-items="totalItems"
+                        items-per-page="itemsPerPage"
+                        ng-model="currentPage"
+                        boundary-links="true"
+                        max-size="max_size"
+                        class="pagination-sm"
+                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                        last-text="&raquo;">
+        </uib-pagination>
+        <!--<pre>The selected page no: {{currentPage}}</pre>-->
+        <!--page="currentPage"-->
+        <!--on-select-page="setPage(page)"-->
 
 
     </div>

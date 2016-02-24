@@ -115,6 +115,12 @@ body {
 
 a{
   color: #003300;
+
+}
+
+a, a:hover{
+ font-size: larger;
+  text-decoration: none;
 }
 
 .modal-dialog {
@@ -229,6 +235,9 @@ a{
 
 }
 
+.click-here-home > a:hover{
+  font-size: 20px;
+}
 .board{
   /*background: url(../images/board.jpg) no-repeat;*/
   background-size: cover;

@@ -666,15 +666,36 @@ angular.module('blogApp')
 
 
         }])
-    .controller('plansController', ['plansFactory','$uibModal',
-        function (plansFactory,$uibModal) {
+    .controller('plansController', ['$scope','plansFactory','$uibModal',
+        function ($scope, plansFactory,$uibModal) {
             var vm = this;
             vm.plans = {};
             vm.parametrs ={};
             vm.item = {};
             vm.getPlans = getPlans();
             vm.getParametrs= getParameters();
-            vm.openPlanModal = openPlanModal;
+            vm.myCheck = true;
+            vm.addPlan =addPlan;
+            vm.savePlan=savePlan;
+            vm.closePlan =closePlan;
+
+            function savePlan(){
+                $scope.addPlanForm.$setPristine();
+                vm.myCheck = true;
+                vm.idea.id= vm.ideas.length;
+                ideasFactory.saveIdea(angular.copy(vm.idea));
+                getIdeas();
+                vm.idea ={};
+            }
+            function addPlan(){
+                $scope.addPlanForm.$setPristine();
+                vm.myCheck = false;
+            }
+
+            function closePlan(){
+                vm.myCheck = true;
+                $scope.addPlanForm.$setPristine();
+            }
 
             function getPlans() {
                 vm.plans = plansFactory.getPlans();
