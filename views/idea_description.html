@@ -1,18 +1,19 @@
 <div class="container content" ng-controller="ideaController as ideaCtrl">
     <div class="row">
-              <div class="col-xs-12 col-sm-4">
-                  <ul class="breadcrumb">
-                      <li><a ui-sref="app.ideas">Ideas</a></li>
-                      <li class="active">Details</li>
-                  </ul>
-        <p><h2>{{ideaCtrl.idea.title}}
+        <div class="col-xs-12 col-sm-4">
+            <ul class="breadcrumb">
+                <li><a ui-sref="app">Home</a></li>
+                <li><a ui-sref="app.ideas">Ideas</a></li>
+                <li class="active">Details</li>
+            </ul>
+            <p>
+            <h2>{{ideaCtrl.idea.title}}
             </h2></p>
-        <p>{{ideaCtrl.idea.description}}</p></div>
+            <p>{{ideaCtrl.idea.description}}</p>
+        </div>
         <div class="col-xs-12 col-sm-8">
             <img class="img-responsive img-thumbnail" ng-src="{{ideaCtrl.idea.image}}">
         </div>
-  
+
     </div>
-    
-   
 </div>

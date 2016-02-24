@@ -63,8 +63,8 @@ angular.module('blogApp', ['ui.router', 'ngResource',
                     }
                 }
             })
-            .state('app.calculation', {
-            url : 'calculation',
+            .state('app.furniture', {
+            url : 'furniture',
             views: {
                 'content@' : {
                     templateUrl : 'views/calculation.html',

@@ -170,21 +170,35 @@ a{
   color: darkred;
 }
 
-.stuff_total{
+#stuff-total-sticker{
   text-align: center;
-  padding-top: 40px;
+  padding-top: 50px;
   margin-top: 30px;
-min-height: 240px;
+ min-height: 240px;
   margin-bottom: 30px;
   font-size: 16px;
   font-family: 'Indie Flower', cursive;
   font-weight: bold;
-  background-size:contain;
+  background-size: contain;
   background: url(../images/sticker.jpg) no-repeat center;
 
 }
+.plan-sticker{
+  text-align: center;
+  padding-top: 60px;
+  margin-top: 10px;
+  min-height: 170px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-family: 'Indie Flower', cursive;
+  font-weight: bold;
+  background-size: contain;
+  color: darkgreen;
+  background: url(../images/sticker_3.jpg) no-repeat center;
 
-.add-idea-wrapper {
+}
+
+.add-idea-sticker {
   min-height: 220px;
   text-align: center;
   padding-top: 50px;
@@ -194,25 +208,30 @@ min-height: 240px;
   margin-bottom: 30px;
   font-size: 17px;
   font-family: 'Indie Flower', cursive;
-  font-weight: bold;
   background-size: contain;
+  color: darkmagenta;
+  font-weight: 600;
   background: url(../images/sticker_.jpg) no-repeat center;
 }
-
-.add-idea-wrapper_ {
+.idea-sticker {
   min-height: 220px;
   text-align: center;
-  padding-top: 70px;
+  padding-top: 50px;
   padding-left: 50px;
   padding-right: 50px;
   margin-top: 10px;
   margin-bottom: 30px;
   font-size: 16px;
   font-family: 'Indie Flower', cursive;
-  font-weight: 400px;
+  font-weight: 400;
   background-size: contain;
   background: url(../images/sticker_2.jpg) no-repeat center;
 
+}
+
+.board{
+  /*background: url(../images/board.jpg) no-repeat;*/
+  background-size: cover;
 }
 
 .rotate{
@@ -317,18 +336,6 @@ min-height: 240px;
 }
 
 
-.passion-wrapper {
-  background: rgba(19,52,128,0.61);;
-  padding: 12px;
-  color: #FFF;
-  border-radius: 2px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 10px;
-  text-align: center;
-}
-
 .passion-wrapper:hover {
   background: rgba(9, 70, 128, 0.61);;}
 .article-wrapper{
@@ -345,7 +352,6 @@ min-height: 240px;
 }
 
 .calculator{
-
   border-radius: 2px;
   background: #ffbb39;
   font-size: 18px;
@@ -392,6 +398,10 @@ min-height: 240px;
   left:-200px;
   top: 200px;
 }
+/*fix this selector does not work*/
+.ng-hide textarea{
+  resize: vertical;
+}
 
  .close-me {
   position: absolute;
@@ -401,3 +411,4 @@ min-height: 240px;
   color: #e3e3e3;
   vertical-align: middle
 }
+

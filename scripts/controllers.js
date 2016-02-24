@@ -625,6 +625,7 @@ angular.module('blogApp')
             vm.myCheck = true;
 
             vm.ideas = {};
+            vm.idea ={};
             vm.getIdeas = getIdeas();
             vm.setActive = setActive;
             vm.addIdea = addIdea;
@@ -648,10 +649,13 @@ angular.module('blogApp')
             }
 
             function saveIdea(){
-                console.log("save idea");
+                console.log(vm.idea);
                 $scope.addIdeaForm.$setPristine();
                 vm.myCheck = true;
-
+                vm.idea.id= vm.ideas.length;
+                ideasFactory.saveIdea(angular.copy(vm.idea));
+                getIdeas();
+                vm.idea ={};
             }
 
             function closeIdea(){

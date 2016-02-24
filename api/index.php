@@ -128,11 +128,11 @@ $app->post('/users/login', function () use ($app) {
     $password = $data_array["password"];
     $sql_email = "SELECT * FROM `users` WHERE `email`='$email'";
     $rs = $db->query($sql_email);
+    $data = $rs->fetch_all(MYSQLI_ASSOC);
 
     if ($rs->num_rows != 0) {
-        $passwordTrue = 123123;
-
-        if ($password == $passwordTrue) {
+        $realPass = $data[0]['password'];
+        if ($password == $realPass) {
             $unicode = uniqid();
             $sql = "UPDATE `users` SET `unicode` = '$unicode' WHERE `email` = '$email'";
             $db->query($sql);
