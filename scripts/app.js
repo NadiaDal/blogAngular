@@ -1,5 +1,6 @@
 'use strict';
-angular.module('blogApp', ['ui.router', 'ngResource', 'ui.bootstrap', 'angular-toArrayFilter'])
+angular.module('blogApp', ['ui.router', 'ngResource',
+    'ui.bootstrap', 'angular-toArrayFilter', 'ngAnimate'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
 

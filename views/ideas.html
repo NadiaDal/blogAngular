@@ -1,28 +1,39 @@
 <div class="container content" ng-controller="ideasController as ideasCtrl">
 
     <div class="row">
-        <div class="col-sm-4" >
+        <div class="col-sm-4">
 
-                <!--<nav class="drawer-nav" style="display:{{ideasCtrl.display}}; left: 0px;">-->
+            <!--<nav class="drawer-nav" style="display:{{ideasCtrl.display}}; left: 0px;">-->
 
-                        <!--<a href="" class="close click_tracking">Close</a>-->
-
-                            <!--<form class="form-horizontal">-->
-                                <!--<div class="form-group">-->
-                                    <!--<input class="form-control form-control_" type="text">-->
-                                <!--</div>-->
-                                <!--<div class="form-group">-->
-                                    <!--<textarea class="form-control form-control_"></textarea>-->
-                                <!--</div>-->
-                            <!--</form>-->
+            <!--<a href="" class="close click_tracking">Close</a>-->
 
 
+            <!--</nav>-->
+            <style>
 
-                <!--</nav>-->
+
+            </style>
+
+
+            <div class="hide-me" ng-hide="ideasCtrl.myCheck">
+                <span class="close-me" ng-click="ideasCtrl.closeIdea()">Close</span>
+                <br><br>
+                <form class="form-horizontal" name="addIdeaForm">
+                    <div class="form-group">
+                        <input class="form-control " type="text">
+                    </div>
+                    <div class="form-group">
+                        <textarea style="resize: vertical;" class="form-control " rows="7"></textarea>
+                    </div>
+                    <span class="close-me" ng-click="ideasCtrl.saveIdea()">Save</span>
+                </form>
+
+            </div>
 
             <div class="row add-idea-wrapper">
-                <div class="col-xs-12" ng-click="ideasCtrl.addIdea()">
-                  So there could be <br>
+                <div
+                        class="col-xs-12" ng-click="ideasCtrl.addIdea()">
+                    So there could be <br>
                     your idea getting <br>
                     from different<br>
                     resources.
@@ -32,7 +43,8 @@
             <div class="row add-idea-wrapper_">
                 <div class="col-xs-12">
                     <div class="rotate">
-                  PS: Do not forget <br>to add <br>description to it! <br>;-)</div>
+                        PS: Do not forget <br>to add <br>description to it! <br>;-)
+                    </div>
                 </div>
             </div>
 
@@ -62,17 +74,17 @@
                 <div class="col-xs-12 ">
                     <a ng-repeat="idea in ideasCtrl.ideas">
                         <img ng-src="{{idea.image}}"
-                        class="small_pic_idea"
-                             ng-click ="ideasCtrl.setActive(idea.id)"
+                             class="small_pic_idea"
+                             ng-click="ideasCtrl.setActive(idea.id)"
                         >
                     </a>
                 </div>
             </div>
 
 
-            </div>
         </div>
-
     </div>
+
+</div>
 
 </div>

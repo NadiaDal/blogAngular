@@ -617,16 +617,19 @@ angular.module('blogApp')
             }
         }])
 
-    .controller('ideasController', ['ideasFactory',
-        function (ideasFactory) {
+    .controller('ideasController', ['$scope', 'ideasFactory',
+        function ($scope, ideasFactory) {
             var vm = this;
             vm.myInterval = 4000;
             vm.noWrapSlides = false;
+            vm.myCheck = true;
 
             vm.ideas = {};
             vm.getIdeas = getIdeas();
             vm.setActive = setActive;
             vm.addIdea = addIdea;
+            vm.saveIdea = saveIdea;
+            vm.closeIdea = closeIdea;
 
 
             function setActive(id) {
@@ -635,12 +638,26 @@ angular.module('blogApp')
 
             function getIdeas() {
                 vm.ideas = ideasFactory.getIdeas();
-                console.log(vm.ideas);
+                //console.log(vm.ideas);
             }
 
             function addIdea() {
                 console.log("add idea");
-                vm.display = 'block';
+                vm.myCheck = false;
+
+            }
+
+            function saveIdea(){
+                console.log("save idea");
+                $scope.addIdeaForm.$setPristine();
+                vm.myCheck = true;
+
+            }
+
+            function closeIdea(){
+                console.log("close idea");
+                $scope.addIdeaForm.$setPristine();
+                vm.myCheck = true;
             }
 
 
