@@ -15,11 +15,25 @@ $app->get('/articles', function () use ($app) {
 $app->get('/articles/:index', function ($index) use ($app) {
     require_once '../lib/mysql.php';
     $db = connect_db();
-    $sql = "SELECT * FROM articles WHERE `id`=$index ";
+    $sql = "SELECT * FROM articles WHERE `id`=$index";
     $rs = $db->query($sql);
     $data = $rs->fetch_all(MYSQLI_ASSOC);
     $app->contentType("application/json");
     echo json_encode($data);
+});
+
+$app->post('/articles/author', function () use ($app) {
+    require_once '../lib/mysql.php';
+    $db = connect_db();
+    $json = $app->request->getBody();
+    $data_array = json_decode($json, true);
+    $author_email =$data_array['email'];
+    $sql = "SELECT * FROM articles WHERE `author`='$author_email'";
+    $rs = $db->query($sql);
+    $data = $rs->fetch_all(MYSQLI_ASSOC);
+    $app->contentType("application/json");
+    echo  json_encode($data);
+//    echo $sql;
 });
 
 $app->post('/articles', function () use ($app) {

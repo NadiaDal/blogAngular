@@ -139,6 +139,7 @@ angular.module('blogApp')
             var vm = this;
             vm.articles = {};
             vm.article = {};
+            vm.articlesByAuthor = {};
 
             vm.errorMessage = "";
             vm.showAdminArticles = false;
@@ -150,7 +151,9 @@ angular.module('blogApp')
                 date: "",
                 content: ""
             };
-            vm.author = author();
+            vm.author = {
+                email: authorEmail()
+            };
             vm.checkUnicode = checkUnic();
             vm.getArticle = getArticle;
             vm.getArticles = getArticles;
@@ -169,7 +172,8 @@ angular.module('blogApp')
                 }
             });
 
-            function author() {
+            function authorEmail() {
+                //console.log("get Author" + loginFactory.getEmail())
                 return loginFactory.getEmail();
             }
 
@@ -177,7 +181,7 @@ angular.module('blogApp')
                 loginFactory.checkUnicode()
                     .then(
                         function (_) {
-                            getArticles();
+                            getArticlesByAuthor();
                         },
                         function (response) {
                             if (response.status == 401) {
@@ -206,6 +210,20 @@ angular.module('blogApp')
                             }
                         );
 
+            }
+
+            function getArticlesByAuthor(){
+                articleFactory.getArticlesByAuthor(vm.author)
+                    .then(
+                        function (response) {
+                            vm.articlesByAuthor = response.data;
+                            vm.showAdminArticles = true;
+                            //console.log(vm.articlesByAuthor);
+                        },
+                        function (response) {
+                           // $log.error(response.status + " " + response.statusText);
+                        }
+                    );
             }
 
             function getArticles() {
@@ -296,7 +314,7 @@ angular.module('blogApp')
                             $scope.item.login = true;
                             loginFactory.setUnicode(response.data, item.email);
                             //console.log(loginFactory.getUnicode());
-                            // console.log(loginFactory.getEmail());
+                            //console.log(loginFactory.getEmail());
                             $uibModalInstance.close($scope.item);
                         },
                         function (response) {

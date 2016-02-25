@@ -16,6 +16,9 @@ angular.module('blogApp')
             this.getArticle = function(index){
                 return $http.get(baseURL + "articles/" + index);
             };
+            this.getArticlesByAuthor = function(author){
+                return $http.post(baseURL + "articles/author", author);
+            };
 
             this.addArticle = function(article){
                 return $http.post(baseURL + "articles", article);
