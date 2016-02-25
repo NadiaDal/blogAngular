@@ -1,4 +1,5 @@
-<div class="container content" ng-controller="adminArticleController as adminArticleCtrl">
+<div class="container content"
+     ng-controller="adminArticleController as adminArticleCtrl">
     <div class="row">
         <div class="col-xs-12">
             <ul class="breadcrumb">
@@ -17,10 +18,11 @@
 
                     <label for="title" class="col-sm-2 control-label">Article Title</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="articleDetailCtrl.article.title"
+                        <input type="text"
                                class="form-control" id="title"
                                name="title"
-                               value="{{adminArticleCtrl.article.title}}" required>
+                               value="{{adminArticleCtrl.article.title}}"
+                               ng-model="adminArticleCtrl.article.title" required>
 
                     </div>
 
@@ -28,9 +30,10 @@
                 <div class="form-group">
                     <label for="feedback" class="col-sm-2 control-label">Article content</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" ng-model="articleDetailCtrl.article.content"
+                        <textarea class="form-control"
                                   id="feedback"
                                   name="feedback" rows="17"
+                                  ng-model="adminArticleCtrl.article.content"
                         >{{adminArticleCtrl.article.content}}</textarea>
                     </div>
                 </div>
@@ -42,3 +45,4 @@
             </form>
         </div>
     </div>
+</div>

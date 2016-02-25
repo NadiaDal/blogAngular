@@ -133,11 +133,13 @@ angular.module('blogApp')
             }
         }])
 
-    .controller('adminArticleController', ['$scope', 'articleFactory', 'loginFactory', '$timeout', '$state', '$stateParams',
+    .controller('adminArticleController',
+        ['$scope', 'articleFactory', 'loginFactory', '$timeout', '$state', '$stateParams',
         function ($scope, articleFactory, loginFactory, $timeout, $state, $stateParams) {
             var vm = this;
             vm.articles = {};
             vm.article = {};
+
             vm.errorMessage = "";
             vm.showAdminArticles = false;
             vm.successAdd = false;
@@ -155,6 +157,17 @@ angular.module('blogApp')
             vm.editArticle = editArticle;
             vm.addArticle = addArticle;
             vm.deleteArticle = addArticle;
+
+            $scope.$watch($stateParams,
+            function(){
+                //console.log($stateParams );
+                var params = $stateParams;
+                if(params.hasOwnProperty('id')){
+                    var id = parseInt(params.id,10);
+                    //console.log(id);
+                    getArticle(id);
+                }
+            });
 
             function author() {
                 return loginFactory.getEmail();
@@ -180,19 +193,19 @@ angular.module('blogApp')
                     );
             }
 
-            function getArticle() {
-                console.log("edit " + parseInt($stateParams.id, 10));
-                articleFactory.getArticle(parseInt($stateParams.id, 10))
-                    .then(
-                        function (response) {
-                            vm.article = response.data[0];
-                            console.log("edit");
-                            console.log(response.data);
-                        },
-                        function (response) {
-                            $log.error(response.status + " " + response.statusText);
-                        }
-                    );
+            function getArticle(id) {
+                    articleFactory.getArticle(id)
+                        .then(
+                            function (response) {
+                                vm.article = response.data[0];
+                                //console.log("edit");
+                                //console.log(vm.article);
+                            },
+                            function (response) {
+                                $log.error(response.status + " " + response.statusText);
+                            }
+                        );
+
             }
 
             function getArticles() {
