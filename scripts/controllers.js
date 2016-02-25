@@ -27,7 +27,7 @@ angular.module('blogApp')
 
             $scope.totalItems = 0;
             $scope.pageCount = 0;
-            $scope.itemsPerPage = 3;
+            $scope.itemsPerPage = 4;
             $scope.currentPage = 1;
             $scope.max_size = 5;
 
@@ -256,6 +256,7 @@ angular.module('blogApp')
             function addArticle() {
                 //console.log("submit");
                 vm.articleAdd.date = new Date();
+                vm.articleAdd.author = vm.author.email;
                 articleFactory.addArticle(angular.copy(vm.articleAdd))
                     .then(
                         function (_) {

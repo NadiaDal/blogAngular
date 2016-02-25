@@ -42,17 +42,18 @@
 
         <div class="col-xs-12 col-sm-8 " ng-if="showArticles">
             <div class="article-wrapper">
-                <div class="media" ng-repeat="article in filteredArticles  | orderBy: '-date'">
+                <div class="media"
+                     ng-repeat="article in filteredArticles  | orderBy: '-date'">
                     <div class="media-left">
                         <img ng-src="">
                     </div>
                     <div class="media-body">
-                        <h2>
+                        <h4>
                             <a ui-sref="app.article({id: article.id})">{{article.title}}</a>
-                        </h2>
+                        </h4>
                         <small>{{article.date}}</small>
 
-                        <p class="subText">{{article.content.substr(0, 250) + "..."}}</p>
+                        <p class="subText">{{article.content.substr(0, 200) + "..."}}</p>
                     </div>
 
                 </div>
