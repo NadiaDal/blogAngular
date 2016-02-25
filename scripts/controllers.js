@@ -159,7 +159,7 @@ angular.module('blogApp')
             vm.getArticles = getArticles;
             vm.editArticle = editArticle;
             vm.addArticle = addArticle;
-            vm.deleteArticle = addArticle;
+            vm.deleteArticle = deleteArticle;
 
             $scope.$watch($stateParams,
             function(){
@@ -245,6 +245,7 @@ angular.module('blogApp')
                 articleFactory.updateArticle(angular.copy(vm.article))
                     .then(
                         function (_) {
+                            getArticlesByAuthor();
                             vm.successEdit = true;
                         },
                         function () {
@@ -259,16 +260,18 @@ angular.module('blogApp')
                     .then(
                         function (_) {
                             vm.successAdd = true;
+                            getArticlesByAuthor();
                         },
                         function () {
                         });
             }
 
             function deleteArticle(id) {
+                //console.log("delete");
                 articleFactory.deleteArticle(id.id)
                     .then(
                         function () {
-                            getArticles();
+                            getArticlesByAuthor();
                         },
                         function () {
 
