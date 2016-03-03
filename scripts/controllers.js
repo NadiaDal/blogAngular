@@ -135,69 +135,69 @@ angular.module('blogApp')
 
     .controller('adminArticleController',
         ['$scope', 'articleFactory', 'loginFactory', '$timeout', '$state', '$stateParams',
-        function ($scope, articleFactory, loginFactory, $timeout, $state, $stateParams) {
-            var vm = this;
-            vm.articles = {};
-            vm.article = {};
-            vm.articlesByAuthor = {};
+            function ($scope, articleFactory, loginFactory, $timeout, $state, $stateParams) {
+                var vm = this;
+                vm.articles = {};
+                vm.article = {};
+                vm.articlesByAuthor = {};
 
-            vm.errorMessage = "";
-            vm.showAdminArticles = false;
-            vm.successAdd = false;
-            vm.successEdit = false;
-            vm.articleAdd = {
-                title: "",
-                author: "",
-                date: "",
-                content: ""
-            };
-            vm.author = {
-                email: authorEmail()
-            };
-            vm.checkUnicode = checkUnic();
-            vm.getArticle = getArticle;
-            vm.getArticles = getArticles;
-            vm.editArticle = editArticle;
-            vm.addArticle = addArticle;
-            vm.deleteArticle = deleteArticle;
+                vm.errorMessage = "";
+                vm.showAdminArticles = false;
+                vm.successAdd = false;
+                vm.successEdit = false;
+                vm.articleAdd = {
+                    title: "",
+                    author: "",
+                    date: "",
+                    content: ""
+                };
+                vm.author = {
+                    email: authorEmail()
+                };
+                vm.checkUnicode = checkUnic();
+                vm.getArticle = getArticle;
+                vm.getArticles = getArticles;
+                vm.editArticle = editArticle;
+                vm.addArticle = addArticle;
+                vm.deleteArticle = deleteArticle;
 
-            $scope.$watch($stateParams,
-            function(){
-                //console.log($stateParams );
-                var params = $stateParams;
-                if(params.hasOwnProperty('id')){
-                    var id = parseInt(params.id,10);
-                    //console.log(id);
-                    getArticle(id);
-                }
-            });
-
-            function authorEmail() {
-                //console.log("get Author" + loginFactory.getEmail())
-                return loginFactory.getEmail();
-            }
-
-            function checkUnic() {
-                loginFactory.checkUnicode()
-                    .then(
-                        function (_) {
-                            getArticlesByAuthor();
-                        },
-                        function (response) {
-                            if (response.status == 401) {
-                                vm.errorMessage = "User is not authorized to access data.";
-                                $timeout(function () {
-                                    $state.go('app');
-                                }, 2000);
-                                console.log("User is not authorized to access data.");
-                            } else {
-                                vm.errorMessage = response.status + " " + response.statusText;
-                            }
+                $scope.$watch($stateParams,
+                    function () {
+                        //console.log($stateParams );
+                        var params = $stateParams;
+                        if (params.hasOwnProperty('id')) {
+                            var id = parseInt(params.id, 10);
+                            //console.log(id);
+                            getArticle(id);
                         }
-                    );
-            }
+                    });
 
-            function getArticle(id) {
+                function authorEmail() {
+                    //console.log("get Author" + loginFactory.getEmail())
+                    return loginFactory.getEmail();
+                }
+
+                function checkUnic() {
+                    loginFactory.checkUnicode()
+                        .then(
+                            function (_) {
+                                getArticlesByAuthor();
+                            },
+                            function (response) {
+                                if (response.status == 401) {
+                                    vm.errorMessage = "User is not authorized to access data.";
+                                    $timeout(function () {
+                                        $state.go('app');
+                                    }, 2000);
+                                    console.log("User is not authorized to access data.");
+                                } else {
+                                    vm.errorMessage = response.status + " " + response.statusText;
+                                }
+                            }
+                        );
+                }
+
+                function getArticle(id) {
                     articleFactory.getArticle(id)
                         .then(
                             function (response) {
@@ -210,75 +210,75 @@ angular.module('blogApp')
                             }
                         );
 
-            }
+                }
 
-            function getArticlesByAuthor(){
-                articleFactory.getArticlesByAuthor(vm.author)
-                    .then(
-                        function (response) {
-                            vm.articlesByAuthor = response.data;
-                            vm.showAdminArticles = true;
-                            //console.log(vm.articlesByAuthor);
-                        },
-                        function (response) {
-                           // $log.error(response.status + " " + response.statusText);
-                        }
-                    );
-            }
+                function getArticlesByAuthor() {
+                    articleFactory.getArticlesByAuthor(vm.author)
+                        .then(
+                            function (response) {
+                                vm.articlesByAuthor = response.data;
+                                vm.showAdminArticles = true;
+                                //console.log(vm.articlesByAuthor);
+                            },
+                            function (response) {
+                                // $log.error(response.status + " " + response.statusText);
+                            }
+                        );
+                }
 
-            function getArticles() {
-                articleFactory.getArticles()
-                    .then(
-                        function (response) {
-                            vm.articles = response.data;
-                            vm.showAdminArticles = true;
+                function getArticles() {
+                    articleFactory.getArticles()
+                        .then(
+                            function (response) {
+                                vm.articles = response.data;
+                                vm.showAdminArticles = true;
 
-                        },
-                        function (response) {
-                            vm.message = "Error: " + response.status + " " + response.statusText;
-                        }
-                    );
-            }
+                            },
+                            function (response) {
+                                vm.message = "Error: " + response.status + " " + response.statusText;
+                            }
+                        );
+                }
 
-            function editArticle() {
-                vm.article.date = new Date();
-                articleFactory.updateArticle(angular.copy(vm.article))
-                    .then(
-                        function (_) {
-                            getArticlesByAuthor();
-                            vm.successEdit = true;
-                        },
-                        function () {
-                        }
-                    );
-            }
+                function editArticle() {
+                    vm.article.date = new Date();
+                    articleFactory.updateArticle(angular.copy(vm.article))
+                        .then(
+                            function (_) {
+                                getArticlesByAuthor();
+                                vm.successEdit = true;
+                            },
+                            function () {
+                            }
+                        );
+                }
 
-            function addArticle() {
-                //console.log("submit");
-                vm.articleAdd.date = new Date();
-                vm.articleAdd.author = vm.author.email;
-                articleFactory.addArticle(angular.copy(vm.articleAdd))
-                    .then(
-                        function (_) {
-                            vm.successAdd = true;
-                            getArticlesByAuthor();
-                        },
-                        function () {
-                        });
-            }
+                function addArticle() {
+                    //console.log("submit");
+                    vm.articleAdd.date = new Date();
+                    vm.articleAdd.author = vm.author.email;
+                    articleFactory.addArticle(angular.copy(vm.articleAdd))
+                        .then(
+                            function (_) {
+                                vm.successAdd = true;
+                                getArticlesByAuthor();
+                            },
+                            function () {
+                            });
+                }
 
-            function deleteArticle(id) {
-                //console.log("delete");
-                articleFactory.deleteArticle(id.id)
-                    .then(
-                        function () {
-                            getArticlesByAuthor();
-                        },
-                        function () {
+                function deleteArticle(id) {
+                    //console.log("delete");
+                    articleFactory.deleteArticle(id.id)
+                        .then(
+                            function () {
+                                getArticlesByAuthor();
+                            },
+                            function () {
 
-                        });
-            }
-        }])
+                            });
+                }
+            }])
     .controller('ModalInstanceLoginCtrl', ['$scope', '$uibModalInstance', 'item', 'loginFactory',
         function ($scope, $uibModalInstance, item, loginFactory) {
             $scope.emailErrorMessage = false;
@@ -454,16 +454,26 @@ angular.module('blogApp')
             }
         }])
 
-    .controller('stuffController', ['stuffFactory', '$uibModal',
-        function (stuffFactory, $uibModal) {
+    .controller('stuffController', ['stuffFactory', '$uibModal', '$scope',
+        function (stuffFactory, $uibModal, $scope) {
             var vm = this;
+            var limitPrice = 2250;
+            var limitWeight = 50;
+            vm.item = {};
             vm.tab = 1;
             vm.filtText = '';
             vm.image = '';
-            vm.showTax = false;
+            vm.toUSD = {
+                UAH: 28,
+                PLN: 4
+            };
+            vm.showTaxes = false;
+            vm.myCheck = true;
             vm.stuff = {};
             vm.allByID = [];
             vm.filtered = [];
+            vm.taxes = false;
+
             vm.getStuff = getStuff();
             vm.isSelected = isSelected;
             vm.getTotal = getTotal;
@@ -471,13 +481,13 @@ angular.module('blogApp')
             vm.addStuff = addStuff;
             vm.deleteStuff = deleteStuff;
             vm.select = select;
-            vm.showImg = showImg;
-            vm.hideImg = hideImg;
             vm.openInNewTab = openInNewTab;
             vm.setBorderTax = setBorderTax;
             vm.getBorderTax = getBorderTax;
-            var limitPrice = 2250;
-            var limitWeight = 50;
+            vm.toggleTaxes = toggleTaxes;
+            vm.openAddStuff = openAddStuff;
+            vm.closeAddStuff = closeAddStuff;
+
 
             function getStuff() {
                 stuffFactory.getStuff()
@@ -530,7 +540,13 @@ angular.module('blogApp')
             function getTotal() {
                 var result = 0;
                 vm.filtered.forEach(function (el) {
-                    result += el.price * el.num;
+                    if (el.currency == 'USD') {
+                        result += el.price * el.num;
+                    } else if (el.currency == 'PLN') {
+                        result += el.price / vm.toUSD.PLN * el.num;
+                    } else if (el.currency == 'UAH') {
+                        result += el.price / vm.toUSD.UAH * el.num;
+                    }
                 });
                 return result;
             }
@@ -569,39 +585,18 @@ angular.module('blogApp')
             }
 
             function addStuff() {
-                var modalInstance = $uibModal.open({
-                    animation: true,
-                    templateUrl: 'views/addStuffModal.html',
-                    controller: 'ModalInstanceStuffCtrl',
-                    resolve: {
-                        item: {
-                            name: "",
-                            num: 0,
-                            price: 0,
-                            room: "",
-                            link: "",
-                            image: "",
-                            currency: "",
-                            weight: 0
-                        }
-                    }
-                });
-
-                modalInstance.result
+                console.log(vm.item);
+                stuffFactory.addStuff(vm.item)
                     .then(
-                        function (item) {
-                            console.log(item);
-                            stuffFactory.addStuff(item).then(
-                                function (_) {
-                                    getStuff();
-                                },
-                                function () {
-                                }
-                            )
-                        },
-                        function () {
-                            //  console.log('Modal dismissed at: ' + new Date());
-                        });
+                    function (_) {
+                        getStuff();
+                        vm.myCheck = true;
+                        $scope.addStuffForm.$setPristine();
+                        vm.item = {};
+                    },
+                    function(){
+
+                    })
             }
 
             /*assume that 20% have to pay from all price*/
@@ -629,26 +624,37 @@ angular.module('blogApp')
             function getBorderTax() {
                 var result = 0;
                 vm.filtered.forEach(function (el) {
-                    result += el.borderTax;
+
+                    if (el.currency == 'USD') {
+                        result += el.borderTax;
+                    } else if (el.currency == 'PLN') {
+                        result += el.borderTax / vm.toUSD.PLN;
+                    } else if (el.currency == 'UAH') {
+                        result += el.borderTax / vm.toUSD.UAH;
+                    }
                 });
                 // console.log("getBorderTax :" + result);
                 return result;
             }
 
-
-            function showImg(id) {
-                vm.image = '';
-                vm.onhoover = true;
-            }
-
-            function hideImg() {
-                vm.image = '';
-                vm.onhoover = true;
-            }
-
             function openInNewTab(url) {
                 var win = window.open(url.url, '_blank');
                 win.focus();
+            }
+
+            function toggleTaxes() {
+                vm.showTaxes = !vm.showTaxes;
+            }
+
+            function openAddStuff() {
+                vm.myCheck = false
+
+            }
+
+            function closeAddStuff() {
+                vm.myCheck = true;
+                $scope.addStuffForm.$setPristine();
+                vm.item = {};
             }
         }])
 
@@ -660,7 +666,7 @@ angular.module('blogApp')
             vm.myCheck = true;
 
             vm.ideas = {};
-            vm.idea ={};
+            vm.idea = {};
             vm.getIdeas = getIdeas();
             vm.setActive = setActive;
             vm.addIdea = addIdea;
@@ -683,17 +689,17 @@ angular.module('blogApp')
 
             }
 
-            function saveIdea(){
+            function saveIdea() {
                 console.log(vm.idea);
                 $scope.addIdeaForm.$setPristine();
                 vm.myCheck = true;
-                vm.idea.id= vm.ideas.length;
+                vm.idea.id = vm.ideas.length;
                 ideasFactory.saveIdea(angular.copy(vm.idea));
                 getIdeas();
-                vm.idea ={};
+                vm.idea = {};
             }
 
-            function closeIdea(){
+            function closeIdea() {
                 console.log("close idea");
                 $scope.addIdeaForm.$setPristine();
                 vm.myCheck = true;
@@ -701,33 +707,34 @@ angular.module('blogApp')
 
 
         }])
-    .controller('plansController', ['$scope','plansFactory','$uibModal',
-        function ($scope, plansFactory,$uibModal) {
+    .controller('plansController', ['$scope', 'plansFactory', '$uibModal',
+        function ($scope, plansFactory, $uibModal) {
             var vm = this;
             vm.plans = {};
-            vm.parametrs ={};
+            vm.parametrs = {};
             vm.item = {};
             vm.getPlans = getPlans();
-            vm.getParametrs= getParameters();
+            vm.getParametrs = getParameters();
             vm.myCheck = true;
-            vm.addPlan =addPlan;
-            vm.savePlan=savePlan;
-            vm.closePlan =closePlan;
+            vm.addPlan = addPlan;
+            vm.savePlan = savePlan;
+            vm.closePlan = closePlan;
 
-            function savePlan(){
+            function savePlan() {
                 $scope.addPlanForm.$setPristine();
                 vm.myCheck = true;
-                vm.idea.id= vm.ideas.length;
+                vm.idea.id = vm.ideas.length;
                 ideasFactory.saveIdea(angular.copy(vm.idea));
                 getIdeas();
-                vm.idea ={};
+                vm.idea = {};
             }
-            function addPlan(){
+
+            function addPlan() {
                 $scope.addPlanForm.$setPristine();
                 vm.myCheck = false;
             }
 
-            function closePlan(){
+            function closePlan() {
                 vm.myCheck = true;
                 $scope.addPlanForm.$setPristine();
             }
@@ -736,7 +743,7 @@ angular.module('blogApp')
                 vm.plans = plansFactory.getPlans();
             }
 
-            function getParameters(){
+            function getParameters() {
                 vm.parametrs = plansFactory.getParameters();
             }
 
@@ -748,9 +755,9 @@ angular.module('blogApp')
                     controller: 'ModalInstancePlanCtrl',
                     size: "lg",
                     resolve: {
-                        item: function(){
+                        item: function () {
                             vm.item.image = image;
-                           return  vm.item;
+                            return vm.item;
                         }
                     }
                 });
@@ -758,7 +765,7 @@ angular.module('blogApp')
                 modalInstance.result
                     .then(
                         function () {
-                           },
+                        },
                         function () {
                             //  console.log('Modal dismissed at: ' + new Date());
                         });

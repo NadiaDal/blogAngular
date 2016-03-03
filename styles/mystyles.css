@@ -178,11 +178,11 @@ a{
 
 #stuff-total-sticker{
   text-align: center;
-  padding-top: 50px;
+  padding-top: 46px;
   margin-top: 30px;
  min-height: 240px;
   margin-bottom: 30px;
-  font-size: 16px;
+  font-size: 19px;
   font-family: 'Indie Flower', cursive;
   font-weight: bold;
   background-size: contain;
@@ -249,16 +249,10 @@ a{
   transform: rotate(-8deg);
 }
 
-.stuff_total >div>p>span{
-  font-size: 19px;
-}
+
+
 .table {
   margin-top: 0px;
-}
-
-#add_stuff{
-  margin-top: 50px;
-
 }
 
 .img-idea{
