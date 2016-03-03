@@ -1,4 +1,5 @@
 <div class="container content" ng-controller="stuffController as stuffCtrl">
+
     <div class="row">
         <div class="col-xs-12 col-sm-4">
             <div class="hide-me" ng-hide="stuffCtrl.myCheck">
@@ -9,7 +10,7 @@
                     <div class="form-group">
                         <!--<label class="col-xs-12 col-sm-2 control-label">Name</label>-->
                         <input type="text" class="form-control"
-                               value=""
+                               value="{{stuffCtrl.item.name}}"
                                ng-model="stuffCtrl.item.name"
                                placeholder="Name"
                                required>
@@ -18,26 +19,28 @@
                     <div class="form-group">
                         <!--<label class="col-xs-12 col-sm-2 control-label">Link</label>-->
                         <input type="url" class="form-control"
-                               value="" ng-maxlength="-1"
+
+                               value="{{stuffCtrl.item.link}}" ng-maxlength="-1"
                                ng-model="stuffCtrl.item.link" required
                                placeholder="Link">
                     </div>
                     <div class="form-group">
                         <!--<label class="col-xs-12 col-sm-2 control-label">Image link</label>-->
                         <input type="url" class="form-control"
-                               value=""
+                               value="{{stuffCtrl.item.image}}"
                                ng-model="stuffCtrl.item.image" required
                                placeholder="Image link"></div>
                     <div class="form-group">
                         <!--<label class="col-xs-12 col-sm-2 control-label">Price</label>-->
                         <div class="col-xs-6" style="padding-left: 0px;padding-right: 10px">
                             <input type="number" class="form-control"
-                                   value="stuffCtrl.item.price"
+                                   value="{{stuffCtrl.item.price}}"
                                    ng-model="stuffCtrl.item.price" required
                                    placeholder="Price"></div>
 
                         <div class="col-xs-6" style="padding-left: 10px;padding-right: 0px">
-                            <select class="form-control" ng-model="stuffCtrl.item.currency" required>
+                            <select class="form-control"
+                                    ng-model="stuffCtrl.item.currency" required>
                                 <option selected value="USD">USD</option>
                                 <option value="PLN">PLN</option>
                                 <option value="UAH">UAH</option>
@@ -49,12 +52,12 @@
                         <!--<label class="col-xs-12 col-sm-2 control-label">Weight</label>-->
                         <div class="col-xs-6" style="padding-left: 0px;padding-right: 10px">
                             <input type="number" class="form-control"
-                                   value="1"
+                                   value="{{stuffCtrl.item.num}}"
                                    ng-model="stuffCtrl.item.num" required
                                    placeholder="Num"></div>
                         <div class="col-xs-6" style="padding-left: 10px;padding-right: 0px">
                             <input type="number" class="form-control"
-                                   value=""
+                                   value="{{stuffCtrl.item.weight}}"
                                    ng-model="stuffCtrl.item.weight" required
                                    placeholder="Weight"></div>
 
@@ -71,7 +74,7 @@
                             <option value="children">children</option>
                         </select>
                     </div>
-                    <span type="submit" class="close-me"  ng-click="stuffCtrl.addStuff()">Save</span>
+                    <span type="submit" class="close-me"  ng-click="stuffCtrl.addUpdateStuff()">Save</span>
                 </form>
             </div>
             <div>
@@ -118,7 +121,14 @@
                 <p>Total border tax: <br>{{stuffCtrl.getBorderTax() | number:0 }}</p>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-8">
+        <div ng-if="!stuffCtrl.loginMsg"  class="col-xs-12 col-sm-8"
+             ng-controller="loginController as loginCtrl">
+            <span class="alert alert-danger">
+               User is not authorized to access data, please login
+                <!--<a ng-click="loginCtrl.logIn()">login</a>-->
+            </span>
+        </div>
+        <div ng-if="stuffCtrl.loginMsg" class="col-xs-12 col-sm-8">
             <table class="table table-hover table-responsive">
                 <tr ng-repeat="s in stuffCtrl.filtered =
                  (stuffCtrl.stuff | toArray : false | filter:stuffCtrl.filtText)">
@@ -139,10 +149,11 @@
                            </span>
                     </td>
                     <td>{{s.currency}}</td>
-                    <td align="right">{{s.price}}
                     <td align="right">{{s.num}}</td>
-                    <td align="right">{{s.price*s.num+s.borderTax | number: 0}}</td>
-                    <td><a ng-click="stuffCtrl.editStuff({id : s.id})">
+                    <td align="right">{{s.price}}</td>
+
+                    <!--<td align="right">{{s.price*s.num+s.borderTax | number: 0}}</td>-->
+                    <td><a ng-click="stuffCtrl.openEditStuff({id : s.id})">
                         <span class="glyphicon glyphicon-pencil"></span></a></td>
                     <td><a ng-click="stuffCtrl.deleteStuff({id:s.id})">
                         <span class="glyphicon glyphicon-trash"></span></a></td>

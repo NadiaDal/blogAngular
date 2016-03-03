@@ -180,6 +180,7 @@ angular.module('blogApp')
         function ($http, baseURL) {
 
             this.userLogged = {
+                logged: false,
                 code: "",
                 email:""
             };
@@ -203,9 +204,10 @@ angular.module('blogApp')
             };
 
 
-            this.setUnicode = function(code, email){
+            this.setUnicode = function(code, email, logged){
                 this.userLogged.code = code.trim();
                 this.userLogged.email = email;
+                this.userLogged.logged = logged;
             };
 
             this.getUnicode = function(){
@@ -214,6 +216,9 @@ angular.module('blogApp')
 
             this.getEmail = function(){
                 return this.userLogged.email;
+            };
+            this.logged = function(){
+                return this.userLogged.logged;
             };
 
 

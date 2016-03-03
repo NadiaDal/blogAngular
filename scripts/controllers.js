@@ -316,7 +316,7 @@ angular.module('blogApp')
                         function (response) {
 
                             $scope.item.login = true;
-                            loginFactory.setUnicode(response.data, item.email);
+                            loginFactory.setUnicode(response.data, item.email, true);
                             //console.log(loginFactory.getUnicode());
                             //console.log(loginFactory.getEmail());
                             $uibModalInstance.close($scope.item);
@@ -454,8 +454,9 @@ angular.module('blogApp')
             }
         }])
 
-    .controller('stuffController', ['stuffFactory', '$uibModal', '$scope',
-        function (stuffFactory, $uibModal, $scope) {
+    .controller('stuffController', ['stuffFactory', 'loginFactory','$uibModal', '$scope',
+        '$timeout', '$state',
+        function (stuffFactory, loginFactory, $uibModal, $scope,$timeout, $state) {
             var vm = this;
             var limitPrice = 2250;
             var limitWeight = 50;
@@ -473,20 +474,45 @@ angular.module('blogApp')
             vm.allByID = [];
             vm.filtered = [];
             vm.taxes = false;
-
-            vm.getStuff = getStuff();
-            vm.isSelected = isSelected;
-            vm.getTotal = getTotal;
-            vm.editStuff = editStuff;
-            vm.addStuff = addStuff;
+            vm.update = false;
+            vm.checkUnicode = checkUnic();
+            vm.getStuff = getStuff;
+            vm.openAddStuff = openAddStuff;
+            vm.closeAddStuff = closeAddStuff;
+            vm.openEditStuff =openEditStuff;
+            vm.addUpdateStuff = addUpdateStuff;
             vm.deleteStuff = deleteStuff;
             vm.select = select;
+            vm.isSelected = isSelected;
+            vm.getTotal = getTotal;
             vm.openInNewTab = openInNewTab;
             vm.setBorderTax = setBorderTax;
             vm.getBorderTax = getBorderTax;
             vm.toggleTaxes = toggleTaxes;
-            vm.openAddStuff = openAddStuff;
-            vm.closeAddStuff = closeAddStuff;
+            vm.loginMsg = false;
+
+
+            function checkUnic() {
+                loginFactory.checkUnicode()
+                    .then(
+                        function (_) {
+                            vm.loginMsg = true;
+                            getStuff();
+                        },
+                        function (response) {
+                            if (response.status == 401) {
+                                vm.errorMessage = "User is not authorized to access data.";
+                                vm.loginMsg = false;
+                                $timeout(function () {
+                                    $state.go('app');
+                                }, 3000);
+                                console.log("User is not authorized to access data.");
+                            } else {
+                                vm.errorMessage = response.status + " " + response.statusText;
+                            }
+                        }
+                    );
+            }
 
 
             function getStuff() {
@@ -495,6 +521,9 @@ angular.module('blogApp')
                         function (response) {
                             vm.stuff = response.data.map(setBorderTax);
                             vm.stuff.forEach(function (element) {
+                                element.num = parseInt(element.num);
+                                element.price = parseInt(element.price);
+                                element.weight = parseInt(element.weight);
                                 vm.allByID[element.id] = element;
                             })
                         },
@@ -551,52 +580,35 @@ angular.module('blogApp')
                 return result;
             }
 
-
-            function editStuff(id) {
-                var modalInstance = $uibModal.open({
-                    animation: true,
-                    templateUrl: 'views/editStuffModal.html',
-                    controller: 'ModalInstanceStuffCtrl',
-                    resolve: {
-                        item: function () {
-                            return angular.copy(vm.allByID[id.id]);
-                        }
-                    }
-                });
-
-                modalInstance.result.then(
-                    //close callback
-                    function (item) {
-                        console.log(item);
-                        stuffFactory.updateStuff(item)
-                            .then(
-                                function () {
-                                    getStuff();
-                                    //console.log("stuff updated");
-                                },
-                                function () {
-                                }
-                            );
-                    },
-                    //dismiss callback
-                    function () {
-                        // console.log('Modal dismissed at: ' + new Date());
-                    });
-            }
-
-            function addStuff() {
+            function addUpdateStuff() {
                 console.log(vm.item);
-                stuffFactory.addStuff(vm.item)
-                    .then(
-                    function (_) {
-                        getStuff();
-                        vm.myCheck = true;
-                        $scope.addStuffForm.$setPristine();
-                        vm.item = {};
-                    },
-                    function(){
+                if (vm.update) {
+                    stuffFactory.updateStuff(vm.item)
+                        .then(
+                            function () {
+                                getStuff();
+                                vm.myCheck = true;
+                                vm.update = false;
+                                $scope.addStuffForm.$setPristine();
+                                vm.item = {};
+                                console.log("stuff updated");
+                            },
+                            function () {
+                            });
+                } else {
+                    stuffFactory.addStuff(vm.item)
+                        .then(
+                            function (_) {
+                                getStuff();
+                                vm.myCheck = true;
+                                $scope.addStuffForm.$setPristine();
+                                vm.item = {};
+                                console.log("stuff added");
+                            },
+                            function () {
 
-                    })
+                            })
+                }
             }
 
             /*assume that 20% have to pay from all price*/
@@ -647,8 +659,32 @@ angular.module('blogApp')
             }
 
             function openAddStuff() {
-                vm.myCheck = false
+                loginFactory.checkUnicode()
+                    .then(
+                        function (_) {
+                            vm.myCheck = false;
+                        },
+                        function (response) {
+                            if (response.status == 401) {
+                                vm.errorMessage = "User is not authorized to access data.";
+                                vm.loginMsg = false;
+                                //$timeout(function () {
+                                //    $state.go('app');
+                                //}, 2000);
+                                console.log("User is not authorized to access data.");
+                            } else {
+                                vm.errorMessage = response.status + " " + response.statusText;
+                            }
+                        }
+                    );
 
+            }
+
+            function openEditStuff(id){
+                vm.update = true;
+                vm.item = vm.allByID[id.id];
+                vm.myCheck = false;
+                console.log(vm.item);
             }
 
             function closeAddStuff() {
