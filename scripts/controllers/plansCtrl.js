@@ -12,6 +12,7 @@ angular.module('blogApp')
             vm.addPlan = addPlan;
             vm.savePlan = savePlan;
             vm.closePlan = closePlan;
+            vm.openPlanModal=openPlanModal;
 
             function savePlan() {
                 $scope.addPlanForm.$setPristine();

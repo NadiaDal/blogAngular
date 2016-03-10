@@ -68,7 +68,7 @@
                           no-wrap="ideasCtrl.noWrapSlides">
                 <uib-slide ng-repeat="slide in ideasCtrl.ideas"
                            active="slide.active"
-                           index="slide.id">
+                           index="slide.idCarousel">
 
                     <img ng-src="{{slide.image}}" style="margin:auto;">
 
@@ -83,12 +83,13 @@
                     </div>
                 </uib-slide>
             </uib-carousel>
+
             <div class="row">
                 <div class="col-xs-12 ">
                     <a ng-repeat="slide in ideasCtrl.ideas">
                         <img ng-src="{{slide.image}}"
                              class="small_pic_idea"
-                             ng-click="ideasCtrl.setActive(slide.id)">
+                             ng-click="ideasCtrl.setActive(slide.idCarousel)">
 
                     </a>
                 </div>

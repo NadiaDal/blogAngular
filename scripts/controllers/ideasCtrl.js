@@ -36,9 +36,9 @@ angular.module('blogApp')
                             vm.ideas = resp.data;
                             var id = 0;
                             vm.ideas.forEach(function(el){
-                                el.id= id++;
+                                el.idCarousel= id++;
                             });
-                            console.log(vm.ideas);
+                           // console.log(vm.ideas);
                         },
                         function(resp){}
                     );
@@ -66,7 +66,6 @@ angular.module('blogApp')
                 //$scope.addIdeaForm.$setPristine();
                 vm.myCheck = true;
             }
-
         }])
 
 .controller('ideaController', ['ideasFactory', '$stateParams',
@@ -79,10 +78,8 @@ angular.module('blogApp')
             ideasFactory.getIdea(parseInt($stateParams.id, 10)).
             then(function(resp){
                 vm.idea = resp.data[0];
-                console.log(vm.idea);
+               // console.log(vm.idea);
             });
         }
-
-
     }])
 ;
