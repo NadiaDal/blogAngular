@@ -228,6 +228,17 @@ $app->get('/stuff', function () use ($app) {
     echo $json;
 });
 
+$app->get('/stuff/:type', function ($type) use ($app) {
+    require_once '../lib/mysql.php';
+    $db = connect_db();
+    $sql = "SELECT * FROM `stuff` WHERE `type`= '$type'";
+    $rs = $db->query($sql);
+    $data = $rs->fetch_all(MYSQLI_ASSOC);
+    $app->contentType("application/json");
+    $json = json_encode($data, JSON_UNESCAPED_UNICODE);
+    // error_log("Output json".$json,3, "./server.log");
+    echo $json;
+});
 $app->delete('/stuff/:index', function ($index) use ($app) {
     require_once '../lib/mysql.php';
     $db = connect_db();

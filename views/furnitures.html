@@ -121,11 +121,9 @@
                 <p>Total border tax: <br>{{stuffCtrl.getBorderTax() | number:0 }}</p>
             </div>
         </div>
-        <div ng-if="!stuffCtrl.loginMsg"  class="col-xs-12 col-sm-8"
-             ng-controller="loginController as loginCtrl">
+        <div ng-if="!stuffCtrl.loginMsg"  class="col-xs-12 col-sm-8">
             <span class="alert alert-danger">
                User is not authorized to access data, please login
-                <!--<a ng-click="loginCtrl.logIn()">login</a>-->
             </span>
         </div>
         <div ng-if="stuffCtrl.loginMsg" class="col-xs-12 col-sm-8">

@@ -1,26 +1,26 @@
 <div class="container content" ng-controller="stuffController as stuffCtrl">
     <div class="row">
-        <div class="col-sm-5">
-            <div class="calculator">
-               <span>Plytka</span><br>
+        <!--<div class="col-sm-5">-->
+            <!--<div class="calculator">-->
+               <!--<span>Plytka</span><br>-->
 
-                Total quantity : 100<br>
-                Price for m : 25<br>
-                % of damage : 10<br>
-               <span> <p>Total amount: 2750</p></span>
-            </div>
+                <!--Total quantity : 100<br>-->
+                <!--Price for m : 25<br>-->
+                <!--% of damage : 10<br>-->
+               <!--<span> <p>Total amount: 2750</p></span>-->
+            <!--</div>-->
 
-            <div class="calculator">
-                <span>Plytka</span><br>
+            <!--<div class="calculator">-->
+                <!--<span>Plytka</span><br>-->
 
-                Total quantity : 100<br>
-                Price for m : 25<br>
-                % of damage : 10<br>
-                <span> <p>Total amount: 2750</p></span>
-            </div>
+                <!--Total quantity : 100<br>-->
+                <!--Price for m : 25<br>-->
+                <!--% of damage : 10<br>-->
+                <!--<span> <p>Total amount: 2750</p></span>-->
+            <!--</div>-->
 
-        </div>
-        <div class="col-sm-7">
+        <!--</div>-->
+        <div class="col-sm-12">
             <table class="table table-hover table-responsive">
                 <tr ng-repeat="s in stuffCtrl.filtered =
                  (stuffCtrl.stuff | toArray : false | filter:stuffCtrl.filtText)">

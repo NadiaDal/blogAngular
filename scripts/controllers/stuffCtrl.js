@@ -21,8 +21,9 @@ angular.module('blogApp')
             vm.filtered = [];
             vm.taxes = false;
             vm.update = false;
-            vm.checkUnicode = checkUnic();
-            vm.getStuff = getStuff;
+            vm.loginMsg = true;
+            vm.checkUnicode = checkUnic;
+            vm.getStuffByType = getStuffByType();
             vm.openAddStuff = openAddStuff;
             vm.closeAddStuff = closeAddStuff;
             vm.openEditStuff =openEditStuff;
@@ -35,7 +36,7 @@ angular.module('blogApp')
             vm.setBorderTax = setBorderTax;
             vm.getBorderTax = getBorderTax;
             vm.toggleTaxes = toggleTaxes;
-            vm.loginMsg = false;
+
 
 
             function checkUnic() {
@@ -61,8 +62,8 @@ angular.module('blogApp')
             }
 
 
-            function getStuff() {
-                stuffFactory.getStuff()
+            function getStuffByType() {
+                stuffFactory.getStuffByType('fur')
                     .then(
                         function (response) {
                             vm.stuff = response.data.map(setBorderTax);
@@ -213,7 +214,7 @@ angular.module('blogApp')
                         function (response) {
                             if (response.status == 401) {
                                 vm.errorMessage = "User is not authorized to access data.";
-                                vm.loginMsg = false;
+                                //vm.loginMsg = false;
                                 //$timeout(function () {
                                 //    $state.go('app');
                                 //}, 2000);

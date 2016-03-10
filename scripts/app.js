@@ -67,7 +67,7 @@ angular.module('blogApp', ['ui.router', 'ngResource',
             url : 'furniture',
             views: {
                 'content@' : {
-                    templateUrl : 'views/calculation.html',
+                    templateUrl : 'views/furnitures.html',
                     controller : 'stuffController'
                 }
             }

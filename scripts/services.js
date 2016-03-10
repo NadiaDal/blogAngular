@@ -182,6 +182,10 @@ angular.module('blogApp')
                 return $http.get(baseURL + "stuff");
             };
 
+            this.getStuffByType = function(type){
+              return $http.get(baseURL + "stuff/" + type)
+            };
+
             this.addStuff = function(stuff){
                 return $http.post(baseURL + "stuff", stuff);
             };
