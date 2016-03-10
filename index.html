@@ -3,6 +3,8 @@
 <html lang="en" ng-app="blogApp">
 
 <head>
+
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,10 +31,16 @@
 <div ui-view="footer"></div>
 
 
+
 <!-- build:js scripts/main.js -->
 <script src="scripts/angular.min.js"></script>
 <script src="scripts/app.js"></script>
-<script src="scripts/controllers.js"></script>
+<script src="scripts/controllers/adminCtrl.js"></script>
+<script src="scripts/controllers/articlesCtrl.js"></script>
+<script src="scripts/controllers/ideasCtrl.js"></script>
+<script src="scripts/controllers/loginCtrl.js"></script>
+<script src="scripts/controllers/plansCtrl.js"></script>
+<script src="scripts/controllers/stuffCtrl.js"></script>
 <script src="scripts/services.js"></script>
 <script src="scripts/angular-ui-router.min.js"></script>
 <script src="scripts/angular-resource.min.js"></script>
@@ -42,6 +50,9 @@
 <script src="scripts/toArrayFilter.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
 <!-- endbuild -->
+<script src="bower_components/tinymce-dist/tinymce.min.js"></script>
+<script src="bower_components/angular-ui-tinymce/dist/tinymce.min.js"></script>
+
 
 </body>
 
