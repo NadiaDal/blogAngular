@@ -51,7 +51,9 @@
                         <h4>
                             <a ui-sref="app.article({id: article.id})">{{article.title}}</a>
                         </h4>
+                        <small>{{article.author}}</small><br>
                         <small>{{article.date}}</small>
+
 
                         <p class="subText">{{article.content.substr(0, 200) + "..."}}</p>
                     </div>

@@ -266,6 +266,72 @@ WHERE `id` = '$id'";
     echo $sql;
 });
 
+
+$app->get('/ideas', function () use ($app) {
+    require_once '../lib/mysql.php';
+    $db = connect_db();
+    $sql = "SELECT * FROM `ideas`;";
+    $rs = $db->query($sql);
+    $data = $rs->fetch_all(MYSQLI_ASSOC);
+    $app->contentType("application/json");
+    $json = json_encode($data, JSON_UNESCAPED_UNICODE);
+    // error_log("Output json".$json,3, "./server.log");
+    echo $json;
+});
+
+$app->get('/ideas/:index', function ($index) use ($app) {
+    require_once '../lib/mysql.php';
+    $db = connect_db();
+    $sql = "SELECT * FROM ideas WHERE `id`=$index";
+    $rs = $db->query($sql);
+    $data = $rs->fetch_all(MYSQLI_ASSOC);
+    $app->contentType("application/json");
+    echo json_encode($data);
+});
+
+
+$app->post('/idea', function () use ($app) {
+    require_once '../lib/mysql.php';
+    $db = connect_db();
+
+    $json = $app->request->getBody();
+    $data_array = json_decode($json, true);
+    $title = $data_array["title"];
+    $author = $data_array["author"];
+    $image = $data_array["image"];
+    $description = $data_array["description"];
+    $sql = "INSERT INTO `ideas` (`id`, `title`, `author`,`image`, `description`)
+	VALUES (NULL, '$title', '$author','$image', '$description')";
+    $db->query($sql);
+    echo $sql;
+});
+
+$app->delete('/ideas/:index', function ($index) use ($app) {
+    require_once '../lib/mysql.php';
+    $db = connect_db();
+    $sql = "DELETE FROM `ideas` WHERE `id`=$index";
+    $db->query($sql);
+    echo $sql;
+});
+
+$app->put('/ideas', function () use ($app) {
+    require_once '../lib/mysql.php';
+    $db = connect_db();
+
+    $json = $app->request->getBody();
+    $data_array = json_decode($json, true);
+    $title = $data_array["title"];
+    $author = $data_array["author"];
+    $image = $data_array["image"];
+    $description = $data_array["description"];
+    $id = $data_array["id"];
+    $sql = "UPDATE `ideas` SET
+`title`='$title', `author`='$author',`image`='$image', `description` = '$description'
+WHERE `id` = '$id'";
+    $db->query($sql);
+    echo $sql;
+});
+
 $app->run();
 ?>
 

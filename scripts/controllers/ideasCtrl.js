@@ -4,25 +4,26 @@ angular.module('blogApp')
         function ($scope, ideasFactory,loginFactory) {
             var vm = this;
             vm.myInterval = 4000;
+            vm.active = 1;
             vm.noWrapSlides = false;
             vm.myCheck = true;
             vm.ideas = {};
             vm.idea = {};
-            vm.loginMsg = false;
+            vm.loginMsg = true;
             vm.author = loginFactory.getEmail();
-            vm.getIdeas = getIdeas;
+            vm.getIdeas = getIdeas();
             vm.setActive = setActive;
             vm.addIdea = addIdea;
             vm.saveIdea = saveIdea;
             vm.closeIdea = closeIdea;
 
-            $scope.$watch(loginFactory.getUser.logged, function(){
-                if(loginFactory.getUser.logged){
-                    vm.loginMsg = true;
-                    console.log(vm.loginMsg);
-                    getIdeas();
-                }
-            });
+            //$scope.$watch(loginFactory.getUser.logged, function(){
+            //    if(loginFactory.getUser.logged){
+            //        vm.loginMsg = true;
+            //        console.log(vm.loginMsg);
+            //        getIdeas();
+            //    }
+            //});
 
             function setActive(id) {
                 vm.ideas[parseInt(id)].active = true;
@@ -33,27 +34,31 @@ angular.module('blogApp')
                     .then(
                         function(resp){
                             vm.ideas = resp.data;
+                            var id = 0;
+                            vm.ideas.forEach(function(el){
+                                el.id= id++;
+                            });
+                            console.log(vm.ideas);
                         },
                         function(resp){}
                     );
-                //console.log(vm.ideas);
             }
 
             function addIdea() {
-                console.log("add idea");
+                //console.log("add idea");
                 vm.myCheck = false;
 
             }
 
             function saveIdea() {
                 vm.idea.author= vm.author;
-                console.log(vm.idea);
                 //$scope.addIdeaForm.$setPristine();
                 vm.myCheck = true;
-                vm.idea.id = vm.ideas.length;
-                ideasFactory.saveIdea(angular.copy(vm.idea));
-                getIdeas();
-                vm.idea = {};
+                ideasFactory.saveIdea(angular.copy(vm.idea)).
+                then(function(_){
+                    getIdeas();
+                    vm.idea = {};
+                });
             }
 
             function closeIdea() {
@@ -71,7 +76,11 @@ angular.module('blogApp')
         vm.getIdea = getIdea();
 
         function getIdea() {
-            vm.idea = ideasFactory.getIdea(parseInt($stateParams.id, 10));
+            ideasFactory.getIdea(parseInt($stateParams.id, 10)).
+            then(function(resp){
+                vm.idea = resp.data[0];
+                console.log(vm.idea);
+            });
         }
 
 

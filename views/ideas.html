@@ -1,14 +1,12 @@
 <div class="container content" ng-controller="ideasController as ideasCtrl">
-
     <div class="row">
         <div class="col-sm-4">
             <ul class="breadcrumb">
                 <li><a ui-sref="app">Home</a></li>
                 <li class="active">Ideas</li>
-
-
             </ul>
-            <div class="hide-me" ng-hide="ideasCtrl.myCheck">
+            <div class="hide-me" ng-if="ideasCtrl.loginMsg"
+                 ng-hide="ideasCtrl.myCheck">
                 <span class="close-me" ng-click="ideasCtrl.closeIdea()">Close</span>
                 <br><br>
                 <form class="form-horizontal" name="addIdeaForm">
@@ -61,48 +59,40 @@
                             <br>description to it!
                             <br>;-)
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
-        <div class="col-sm-8 content_idea">
+        <div class="col-sm-8">
+            <uib-carousel interval="ideasCtrl.myInterval"
+                          no-wrap="ideasCtrl.noWrapSlides">
+                <uib-slide ng-repeat="slide in ideasCtrl.ideas"
+                           active="slide.active"
+                           index="slide.id">
 
-            <uib-carousel interval="ideasCtrl.myInterval" no-wrap="ideasCtrl.noWrapSlides">
-                <uib-slide ng-repeat="idea in ideasCtrl.ideas"
-                           active="idea.active"
-                           index="idea.id">
+                    <img ng-src="{{slide.image}}" style="margin:auto;">
 
-                    <img ng-src="{{idea.image}}" style="margin:auto;">
 
 
                     <div class="carousel-caption">
-
-                        <p>{{idea.title}}</p>
+                        <p>{{slide.title}}</p>
                         <p><a ng-click="ideasCtrl.getIdea()"
                               class="btn btn-primary btn-xs"
-                              ui-sref="app.idea({id:idea.id})">
+                              ui-sref="app.idea({id:slide.id})">
                             More about it &raquo;</a></p>
                     </div>
                 </uib-slide>
-
             </uib-carousel>
             <div class="row">
                 <div class="col-xs-12 ">
-                    <a ng-repeat="idea in ideasCtrl.ideas">
-                        <img ng-src="{{idea.image}}"
+                    <a ng-repeat="slide in ideasCtrl.ideas">
+                        <img ng-src="{{slide.image}}"
                              class="small_pic_idea"
-                             ng-click="ideasCtrl.setActive(idea.id)"
-                        >
+                             ng-click="ideasCtrl.setActive(slide.id)">
+
                     </a>
                 </div>
             </div>
-
-
         </div>
     </div>
-
-</div>
-
 </div>

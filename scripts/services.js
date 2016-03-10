@@ -89,21 +89,32 @@ angular.module('blogApp')
     ])
     
 
-    .service('ideasFactory',[
-        function(){
+    .service('ideasFactory',['$http','baseURL',
+        function($http, baseURL){
             this.ideas =[
-                    {id:0, title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20152/dining/20152_codi09a/20152_codi09a_01_PH121614.jpg",
+                    {id:0,
+                        title: "Lorem ipsum",
+                        image : "http://www.ikea.com/ms/media/cho_room/20152/dining/20152_codi09a/20152_codi09a_01_PH121614.jpg",
+                        author: "",
                         description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
                     {id:1,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20161/dining/20161_codi05a/20161_codi05a_01_PH127998.jpg",
+                        author: "",
                         description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
-                    {id:2,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20143/sleeping/20143_cosl15a/20143_cosl15a_01_PH006677.jpg",
-                        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta," },
-                    {id:3,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20154/seating/20154_cols24a/20154_cols24a_01_PH125071.jpg",
+                    {id:2,title: "Lorem ipsum",
+                        image : "http://www.ikea.com/ms/media/cho_room/20143/sleeping/20143_cosl15a/20143_cosl15a_01_PH006677.jpg",
+                        author: "",
+                        description :
+                            "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta," },
+                    {id:3,title: "Lorem ipsum",image :
+                        "http://www.ikea.com/ms/media/cho_room/20154/seating/20154_cols24a/20154_cols24a_01_PH125071.jpg",
+                        author: "",
                         description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
-                //    {id:4,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20151/media/20151_colm04a/20151_colm04a_01_PH121191.jpg",
-                //        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
-                //       {id:5,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20152/dining/20152_codi09a/20152_codi09a_01_PH121614.jpg",
-                //        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, ."},
+                    {id:4,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20151/media/20151_colm04a/20151_colm04a_01_PH121191.jpg",
+                        author: "",
+                        description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
+                       {id:5,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20152/dining/20152_codi09a/20152_codi09a_01_PH121614.jpg",
+                           author: "",
+                           description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, ."}
                 //{id:0, title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20152/dining/20152_codi09a/20152_codi09a_01_PH121614.jpg",
                 //    description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, "},
                 //{id:1,title: "Lorem ipsum",image : "http://www.ikea.com/ms/media/cho_room/20161/dining/20161_codi05a/20161_codi05a_01_PH127998.jpg",
@@ -130,17 +141,25 @@ angular.module('blogApp')
                 //    description : "Curabitur eget elementum quam, id viverra neque. Fusce commodo est tortor, et tincidunt odio bibendum sit amet. Ut sit amet eros nec ipsum scelerisque malesuada id non dolor. Aliquam ac vehicula sem, vel eleifend mi. Pellentesque iaculis elit ipsum, ut tristique purus tempus quis. Proin tortor dolor, ornare eget egestas quis, pellentesque placerat nibh. Mauris congue, sem a fermentum porta, ."}
                 ];
             this.getIdeas = function(){
-                return this.ideas;
+                return $http.get(baseURL +"ideas");
+                //return  this.ideas;
             };
             
             this.getIdea = function(id){
-                return this.ideas[id];
+                return $http.get(baseURL + "ideas/" + id);
             };
 
             this.saveIdea=function(item){
-                console.log('saved');
-                this.ideas.push(item);
-            }
+                return $http.post(baseURL + "idea", item);
+            };
+
+            this.deleteIdea = function(id){
+                return $http.delete(baseURL + "ideas/"+id);
+            };
+
+            this.updateIdea = function(item){
+                return $http.put(baseURL + "articles", item);
+            };
         }
         
         
@@ -195,7 +214,7 @@ angular.module('blogApp')
                 return $http.post(baseURL + "users", user);
             };
 
-            this.logIn = function(user){
+            this.login = function(user){
                 return $http.post(baseURL + "users/login", user);
             };
 
@@ -217,9 +236,14 @@ angular.module('blogApp')
             this.getEmail = function(){
                 return this.userLogged.email;
             };
+
             this.logged = function(){
                 return this.userLogged.logged;
             };
+
+            this.getUser = function(){
+                return this.userLogged;
+            }
 
 
         }])

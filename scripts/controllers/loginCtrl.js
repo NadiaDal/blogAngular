@@ -7,7 +7,7 @@ angular.module('blogApp')
             $scope.errorMessage = "";
             $scope.item = item;
             $scope.close = close;
-            $scope.save = save;
+            $scope.login = login;
             $scope.signUp = signUp;
 
             $scope.alert = {
@@ -15,7 +15,6 @@ angular.module('blogApp')
                 msg: '',
                 show: false
             };
-
 
             $scope.closeAlert = function () {
                 $scope.alert = {
@@ -25,31 +24,24 @@ angular.module('blogApp')
                 };
             };
 
-
             function close() {
                 $uibModalInstance.dismiss('cancel')
             }
 
-            function save() {
-
-                loginFactory.logIn(item)
+            function login() {
+                loginFactory.login(item)
                     .then(
                         function (response) {
-
                             $scope.item.login = true;
                             loginFactory.setUnicode(response.data, item.email, true);
-                            //console.log(loginFactory.getUnicode());
-                            //console.log(loginFactory.getEmail());
+                            console.log(loginFactory.getUser());
                             $uibModalInstance.close($scope.item);
                         },
                         function (response) {
                             if (response.status == 400) {
                                 $scope.passwordErrorMessage = true;
                                 $scope.errorMessage = "Password does not correct!";
-
-
                             } else if (response.status == 404) {
-
                                 $scope.errorMessage = "User does not exist!";
                             } else {
                                 $scope.errorMessage = response.status + " " + response.statusText;
@@ -77,8 +69,6 @@ angular.module('blogApp')
                         }
                     );
             }
-
-
         }])
 
     .controller('loginController', ['$uibModal',
@@ -99,6 +89,7 @@ angular.module('blogApp')
             vm.logIn = logIn;
             vm.logOut = logOut;
             vm.signUp = signUp;
+
             function checkEmail() {
                 // console.log("checkEmail");
                 if (vm.user.email != "") {
@@ -156,7 +147,6 @@ angular.module('blogApp')
                 modalInstance.result.then(
                     function (item) {
                         vm.login = item.login;
-
                     },
                     //dismiss callback
                     function () {
